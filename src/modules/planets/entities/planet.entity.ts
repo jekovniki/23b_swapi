@@ -1,9 +1,13 @@
+import { Film } from 'src/modules/films/entities/film.entity';
+import { Person } from 'src/modules/people/entities/person.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 @Entity('planets')
@@ -43,4 +47,32 @@ export class Planet {
 
   @UpdateDateColumn({ type: 'timestamptz', name: 'updated_at' })
   updatedAt: Date;
+
+  @ManyToMany(() => Film)
+  @JoinTable({
+    name: 'film_planets',
+    joinColumn: {
+      name: 'planet_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'film_id',
+      referencedColumnName: 'id',
+    },
+  })
+  films: Film[];
+
+  @ManyToMany(() => Person)
+  @JoinTable({
+    name: 'planet_residents',
+    joinColumn: {
+      name: 'planet_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'resident_id',
+      referencedColumnName: 'id',
+    },
+  })
+  residents: Person[];
 }

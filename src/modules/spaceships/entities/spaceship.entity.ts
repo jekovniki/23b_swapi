@@ -1,9 +1,13 @@
+import { Film } from 'src/modules/films/entities/film.entity';
+import { Person } from 'src/modules/people/entities/person.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 @Entity('spaceships')
@@ -58,4 +62,32 @@ export class Spaceship {
 
   @UpdateDateColumn({ type: 'timestamptz', name: 'updated_at' })
   updatedAt: Date;
+
+  @ManyToMany(() => Film)
+  @JoinTable({
+    name: 'film_starships',
+    joinColumn: {
+      name: 'starship_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'film_id',
+      referencedColumnName: 'id',
+    },
+  })
+  films: Film[];
+
+  @ManyToMany(() => Person)
+  @JoinTable({
+    name: 'spaceship_pilots',
+    joinColumn: {
+      name: 'spaceship_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'pilot_id',
+      referencedColumnName: 'id',
+    },
+  })
+  pilots: Person[];
 }
