@@ -9,6 +9,7 @@ import { SpaceshipsModule } from './modules/spaceships/spaceships.module';
 import { VehiclesModule } from './modules/vehicles/vehicles.module';
 import { PeopleModule } from './modules/people/people.module';
 import { SpeciesModule } from './modules/species/species.module';
+import { JobsModule } from './modules/jobs/jobs.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { SpeciesModule } from './modules/species/species.module';
     VehiclesModule,
     PeopleModule,
     SpeciesModule,
+    JobsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
