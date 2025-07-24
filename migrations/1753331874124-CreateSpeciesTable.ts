@@ -23,7 +23,31 @@ export class CreateSpeciesTable1753331874124 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'classification',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
             name: 'designation',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'average_height',
+            type: 'float',
+          },
+          {
+            name: 'skin_colors',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'hair_colors',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'eye_colors',
             type: 'varchar',
             isNullable: false,
           },

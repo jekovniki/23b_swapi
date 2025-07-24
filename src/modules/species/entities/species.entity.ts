@@ -18,7 +18,22 @@ export class Species {
   name: string;
 
   @Column('varchar', { nullable: false })
+  classification: string;
+
+  @Column('varchar', { nullable: false })
   designation: string;
+
+  @Column('float', { nullable: true, name: 'average_height' })
+  averageHeight: number;
+
+  @Column('varchar', { nullable: false, name: 'skin_colors' })
+  skinColors: string;
+
+  @Column('varchar', { nullable: false, name: 'hair_colors' })
+  hairColors: string;
+
+  @Column('varchar', { nullable: false, name: 'eye_colors' })
+  eyeColors: string;
 
   @Column('float', { nullable: true, name: 'average_lifespan' })
   averageLifespan: number;

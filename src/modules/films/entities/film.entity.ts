@@ -26,7 +26,7 @@ export class Film {
   @Column('varchar', { nullable: false })
   producer: string;
 
-  @Column({ type: 'timestamptz', name: 'release_date' })
+  @Column({ type: 'varchar', name: 'release_date' })
   releaseDate: Date;
 
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
