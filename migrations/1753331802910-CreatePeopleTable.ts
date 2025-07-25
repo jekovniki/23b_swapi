@@ -66,6 +66,11 @@ export class CreatePeopleTable1753331802910 implements MigrationInterface {
             type: 'timestamptz',
             default: 'CURRENT_TIMESTAMP',
           },
+          {
+            name: 'swapi_url',
+            type: 'varchart',
+            isNullable: false,
+          },
         ],
         indices: [
           {

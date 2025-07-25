@@ -74,6 +74,11 @@ export class CreateVehiclesTable1753331752892 implements MigrationInterface {
             type: 'timestamptz',
             default: 'CURRENT_TIMESTAMP',
           },
+          {
+            name: 'swapi_url',
+            type: 'varchart',
+            isNullable: false,
+          },
         ],
         indices: [
           {

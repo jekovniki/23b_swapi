@@ -42,6 +42,9 @@ export class Planet {
   @Column('bigint', { nullable: false })
   population: number;
 
+  @Column('varchar', { name: 'swapi_url', nullable: false })
+  swapiUrl: string;
+
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
   createdAt: Date;
 

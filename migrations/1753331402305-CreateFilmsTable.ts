@@ -48,6 +48,11 @@ export class CreateFilmsTable1753331402305 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'swapi_url',
+            type: 'varchart',
+            isNullable: false,
+          },
+          {
             name: 'created_at',
             type: 'timestamptz',
             default: 'CURRENT_TIMESTAMP',

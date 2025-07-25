@@ -74,6 +74,11 @@ export class CreateSpeciesTable1753331874124 implements MigrationInterface {
             type: 'timestamptz',
             default: 'CURRENT_TIMESTAMP',
           },
+          {
+            name: 'swapi_url',
+            type: 'varchart',
+            isNullable: false,
+          },
         ],
         indices: [
           {

@@ -72,6 +72,11 @@ export class CreatePlanetsTable1753331663148 implements MigrationInterface {
             type: 'timestamptz',
             default: 'CURRENT_TIMESTAMP',
           },
+          {
+            name: 'swapi_url',
+            type: 'varchart',
+            isNullable: false,
+          },
         ],
         indices: [
           {

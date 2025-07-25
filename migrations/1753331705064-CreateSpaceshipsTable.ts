@@ -86,6 +86,11 @@ export class CreateSpaceshipsTable1753331705064 implements MigrationInterface {
             type: 'timestamptz',
             default: 'CURRENT_TIMESTAMP',
           },
+          {
+            name: 'swapi_url',
+            type: 'varchart',
+            isNullable: false,
+          },
         ],
         indices: [
           {

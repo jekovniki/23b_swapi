@@ -45,6 +45,9 @@ export class Vehicle {
   @Column('varchar', { nullable: true })
   consumables: string;
 
+  @Column('varchar', { name: 'swapi_url', nullable: false })
+  swapiUrl: string;
+
   @Column('varchar', { nullable: true, name: 'vehicle_class' })
   vehicleClass: string;
 

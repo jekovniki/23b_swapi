@@ -56,6 +56,9 @@ export class Person {
   @JoinColumn({ name: 'homeworld_id' })
   homeworld: Planet;
 
+  @Column('varchar', { name: 'swapi_url', nullable: false })
+  swapiUrl: string;
+
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
   createdAt: Date;
 

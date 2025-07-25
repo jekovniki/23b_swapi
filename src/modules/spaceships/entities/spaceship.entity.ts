@@ -57,6 +57,9 @@ export class Spaceship {
   @Column('varchar', { nullable: true, name: 'starship_class' })
   starshipClass: string;
 
+  @Column('varchar', { name: 'swapi_url', nullable: false })
+  swapiUrl: string;
+
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
   createdAt: Date;
 

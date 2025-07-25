@@ -36,6 +36,9 @@ export class Film {
   @Column({ type: 'varchar', name: 'release_date' })
   releaseDate: Date;
 
+  @Column('varchar', { name: 'swapi_url', nullable: false })
+  swapiUrl: string;
+
   @CreateDateColumn({ type: 'timestamptz', name: 'created_at' })
   createdAt: Date;
 
