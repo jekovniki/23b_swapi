@@ -1,5 +1,5 @@
-import { Film } from 'src/modules/films/entities/film.entity';
-import { Person } from 'src/modules/people/entities/person.entity';
+import { Film } from '../../films/entities/film.entity';
+import { Person } from '../../people/entities/person.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,

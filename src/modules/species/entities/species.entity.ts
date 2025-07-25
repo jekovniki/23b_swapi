@@ -1,6 +1,6 @@
-import { Film } from 'src/modules/films/entities/film.entity';
-import { Person } from 'src/modules/people/entities/person.entity';
-import { Planet } from 'src/modules/planets/entities/planet.entity';
+import { Film } from '../../films/entities/film.entity';
+import { Person } from '../../people/entities/person.entity';
+import { Planet } from '../../planets/entities/planet.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,

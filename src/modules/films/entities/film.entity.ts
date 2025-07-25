@@ -1,8 +1,8 @@
-import { Person } from 'src/modules/people/entities/person.entity';
-import { Planet } from 'src/modules/planets/entities/planet.entity';
-import { Spaceship } from 'src/modules/spaceships/entities/spaceship.entity';
-import { Species } from 'src/modules/species/entities/species.entity';
-import { Vehicle } from 'src/modules/vehicles/entities/vehicle.entity';
+import { Person } from '../../people/entities/person.entity';
+import { Planet } from '../../planets/entities/planet.entity';
+import { Spaceship } from '../../spaceships/entities/spaceship.entity';
+import { Species } from '../../species/entities/species.entity';
+import { Vehicle } from '../../vehicles/entities/vehicle.entity';
 import {
   Entity,
   PrimaryGeneratedColumn,

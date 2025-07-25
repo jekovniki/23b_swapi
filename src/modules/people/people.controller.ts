@@ -9,9 +9,4 @@ export class PeopleController {
   findAll() {
     return this.peopleService.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.peopleService.findOne(+id);
-  }
 }
