@@ -5,7 +5,10 @@ import https from 'https';
 import { FilmsService } from '../films/films.service';
 import { PeopleService } from '../people/people.service';
 import { PlanetsService } from '../planets/planets.service';
-import { convertUnknownToUndefined } from '../../shared/utils/helpers.util';
+import {
+  convertUnknownToUndefined,
+  getRangeValue,
+} from '../../shared/utils/helpers.util';
 import { SpeciesService } from '../species/species.service';
 import { SpaceshipsService } from '../spaceships/spaceships.service';
 import { VehiclesService } from '../vehicles/vehicles.service';
@@ -35,6 +38,7 @@ export class SwapiSyncService {
     await this.fetchPlanets();
     await this.fetchPeople();
     await this.fetchSpecies();
+    await this.fetchStarships();
   }
 
   private async fetchAllPages(url: string): Promise<any[]> {
@@ -118,6 +122,38 @@ export class SwapiSyncService {
         eyeColors: type.eye_colors,
         averageLifespan: type.average_lifespan,
         swapiUrl: type.url,
+      })),
+    );
+  }
+
+  private async fetchStarships() {
+    const spaceships = await this.fetchAllPages(SwapiEndpoints.Starships);
+
+    await this.spaceshipService.insertMany(
+      spaceships.map((spaceship) => ({
+        ...spaceship,
+        costInCredists: convertUnknownToUndefined(spaceship.cost_in_credits),
+        length: convertUnknownToUndefined(spaceship.length)?.replace(/,/g, ''),
+        maxAtmospheringSpeed: spaceship.max_atmosphering_speed,
+        minCrew:
+          spaceship.crew !== 'unknown'
+            ? getRangeValue(spaceship.crew?.replace(/,/g, ''), 'min')
+            : null,
+        maxCrew:
+          spaceship.crew !== 'unknown'
+            ? getRangeValue(spaceship.crew?.replace(/,/g, ''), 'max')
+            : null,
+        cargoCapacity: convertUnknownToUndefined(spaceship.cargo_capacity),
+        passengers:
+          spaceship.passengers !== 'n/a'
+            ? convertUnknownToUndefined(spaceship.passengers?.replace(/,/g, ''))
+            : null,
+        hyperdriveRating: convertUnknownToUndefined(
+          spaceship.hyperdrive_rating,
+        ),
+        mglt: convertUnknownToUndefined(spaceship.mglt),
+        starshipClass: spaceship.starship_class,
+        swapiUrl: spaceship.url,
       })),
     );
   }

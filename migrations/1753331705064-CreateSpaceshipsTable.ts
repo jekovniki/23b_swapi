@@ -35,30 +35,43 @@ export class CreateSpaceshipsTable1753331705064 implements MigrationInterface {
           {
             name: 'cost_in_credits',
             type: 'bigint',
+            isNullable: true,
           },
           {
             name: 'length',
             type: 'float',
+            isNullable: true,
           },
+          /**
+           * This thing is really whacky, you have places where you have number as string and
+           * then you have places where it's literally 1000km (starships/11) (also n/a)
+           *
+           * I call bs on that and I will create the column as varchar.
+           */
           {
             name: 'max_atmosphering_speed',
-            type: 'int',
+            type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'minCrew',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'maxCrew',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'passengers',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'cargo_capacity',
             type: 'bigint',
+            isNullable: true,
           },
           {
             name: 'consumables',
@@ -67,10 +80,12 @@ export class CreateSpaceshipsTable1753331705064 implements MigrationInterface {
           {
             name: 'hyperdrive_rating',
             type: 'float',
+            isNullable: true,
           },
           {
             name: 'mglt',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'starship_class',

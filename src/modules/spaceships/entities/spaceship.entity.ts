@@ -30,8 +30,8 @@ export class Spaceship {
   @Column('float', { nullable: true })
   length: number;
 
-  @Column('int', { nullable: true, name: 'max_atmosphering_speed' })
-  maxAtmospheringSpeed: number;
+  @Column('varchar', { nullable: true, name: 'max_atmosphering_speed' })
+  maxAtmospheringSpeed: string;
 
   @Column('int', { nullable: true })
   minCrew: number;
