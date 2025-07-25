@@ -27,7 +27,7 @@ export class Species {
   @Column('varchar', { nullable: false })
   designation: string;
 
-  @Column('float', { nullable: true, name: 'average_height' })
+  @Column('varchar', { nullable: true, name: 'average_height' })
   averageHeight: number;
 
   @Column('varchar', { nullable: false, name: 'skin_colors' })
@@ -39,7 +39,7 @@ export class Species {
   @Column('varchar', { nullable: false, name: 'eye_colors' })
   eyeColors: string;
 
-  @Column('float', { nullable: true, name: 'average_lifespan' })
+  @Column('varchar', { nullable: true, name: 'average_lifespan' })
   averageLifespan: number;
 
   @Column('varchar', { nullable: true })

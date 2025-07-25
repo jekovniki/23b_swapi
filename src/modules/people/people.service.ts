@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Person } from './entities/person.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { CreateFilmDto } from '../films/dto/create-film.dto';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { FilmsService } from '../films/films.service';
@@ -33,7 +33,11 @@ export class PeopleService {
     }
   }
 
-  findAll() {
-    return [];
+  async findByUrls(urls: string[]): Promise<Person[] | null> {
+    return await this.peopleRepository.find({
+      where: {
+        swapiUrl: In(urls),
+      },
+    });
   }
 }

@@ -6,6 +6,9 @@ import { FilmsService } from '../films/films.service';
 import { PeopleService } from '../people/people.service';
 import { PlanetsService } from '../planets/planets.service';
 import { convertUnknownToUndefined } from '../../shared/utils/helpers.util';
+import { SpeciesService } from '../species/species.service';
+import { SpaceshipsService } from '../spaceships/spaceships.service';
+import { VehiclesService } from '../vehicles/vehicles.service';
 
 @Injectable()
 export class SwapiSyncService {
@@ -15,6 +18,9 @@ export class SwapiSyncService {
     private readonly filmService: FilmsService,
     private readonly peopleService: PeopleService,
     private readonly planetService: PlanetsService,
+    private readonly speciesService: SpeciesService,
+    private readonly spaceshipService: SpaceshipsService,
+    private readonly vehicleService: VehiclesService,
   ) {
     this.httpClient = axios.create({
       httpsAgent: new https.Agent({
@@ -28,6 +34,7 @@ export class SwapiSyncService {
     await this.fetchFilms();
     await this.fetchPlanets();
     await this.fetchPeople();
+    await this.fetchSpecies();
   }
 
   private async fetchAllPages(url: string): Promise<any[]> {
@@ -94,6 +101,23 @@ export class SwapiSyncService {
         swapiUrl: person.url,
         mass: convertUnknownToUndefined(person.mass)?.replace(/,/g, ''),
         height: convertUnknownToUndefined(person.height),
+      })),
+    );
+  }
+
+  private async fetchSpecies() {
+    const species = await this.fetchAllPages(SwapiEndpoints.Species);
+
+    await this.speciesService.insertMany(
+      species.map((type) => ({
+        ...type,
+        homeworldUrl: type.homeworld,
+        averageHeight: type.average_height,
+        skinColors: type.skin_colors,
+        hairColors: type.hair_colors,
+        eyeColors: type.eye_colors,
+        averageLifespan: type.average_lifespan,
+        swapiUrl: type.url,
       })),
     );
   }

@@ -34,7 +34,7 @@ export class CreateSpeciesTable1753331874124 implements MigrationInterface {
           },
           {
             name: 'average_height',
-            type: 'float',
+            type: 'varchar',
           },
           {
             name: 'skin_colors',
@@ -53,7 +53,7 @@ export class CreateSpeciesTable1753331874124 implements MigrationInterface {
           },
           {
             name: 'average_lifespan',
-            type: 'float',
+            type: 'varchar',
           },
           {
             name: 'language',
