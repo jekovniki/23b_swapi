@@ -10,6 +10,7 @@ import { VehiclesModule } from './modules/vehicles/vehicles.module';
 import { PeopleModule } from './modules/people/people.module';
 import { SpeciesModule } from './modules/species/species.module';
 import { JobsModule } from './modules/jobs/jobs.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { JobsModule } from './modules/jobs/jobs.module';
     PeopleModule,
     SpeciesModule,
     JobsModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],

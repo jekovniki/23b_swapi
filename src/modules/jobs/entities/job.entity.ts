@@ -11,9 +11,12 @@ export class Job {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column()
   resource: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({
+    type: 'timestamptz',
+    name: 'created_at',
+  })
   createdAt: Date;
 }
