@@ -39,7 +39,7 @@ export class Planet {
   @Column('varchar', { nullable: false, name: 'surface_water' })
   surfaceWater: string;
 
-  @Column('bigint', { nullable: false })
+  @Column('bigint', { nullable: true })
   population: number;
 
   @Column('varchar', { name: 'swapi_url', nullable: false })

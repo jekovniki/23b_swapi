@@ -60,7 +60,7 @@ export class CreatePlanetsTable1753331663148 implements MigrationInterface {
           {
             name: 'population',
             type: 'bigint',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'created_at',

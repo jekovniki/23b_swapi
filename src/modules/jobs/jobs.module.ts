@@ -3,11 +3,21 @@ import { JobsService } from './jobs.service';
 import { SwapiSyncService } from './swapi-sync.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Job } from './entities/job.entity';
-import { FilmsModule } from '../films/films.module';
 import { PeopleModule } from '../people/people.module';
+import { PlanetsModule } from '../planets/planets.module';
+import { SpaceshipsModule } from '../spaceships/spaceships.module';
+import { SpeciesModule } from '../species/species.module';
+import { VehiclesModule } from '../vehicles/vehicles.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Job]), FilmsModule, PeopleModule],
+  imports: [
+    TypeOrmModule.forFeature([Job]),
+    PeopleModule,
+    PlanetsModule,
+    SpaceshipsModule,
+    SpeciesModule,
+    VehiclesModule,
+  ],
   providers: [JobsService, SwapiSyncService],
   exports: [JobsService, SwapiSyncService],
 })

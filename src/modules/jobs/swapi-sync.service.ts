@@ -3,8 +3,9 @@ import { SwapiEndpoints } from './enums/swapi-sync.enum';
 import axios from 'axios';
 import https from 'https';
 import { FilmsService } from '../films/films.service';
-import { Film } from '../films/entities/film.entity';
 import { PeopleService } from '../people/people.service';
+import { PlanetsService } from '../planets/planets.service';
+import { convertUnknownToUndefined } from '../../shared/utils/helpers.util';
 
 @Injectable()
 export class SwapiSyncService {
@@ -13,6 +14,7 @@ export class SwapiSyncService {
   constructor(
     private readonly filmService: FilmsService,
     private readonly peopleService: PeopleService,
+    private readonly planetService: PlanetsService,
   ) {
     this.httpClient = axios.create({
       httpsAgent: new https.Agent({
@@ -23,8 +25,9 @@ export class SwapiSyncService {
   }
 
   public async syncSwapiData() {
-    const films = await this.fetchFilms();
-    const people = await this.fetchPeople(films);
+    await this.fetchFilms();
+    await this.fetchPlanets();
+    await this.fetchPeople();
   }
 
   private async fetchAllPages(url: string): Promise<any[]> {
@@ -61,8 +64,24 @@ export class SwapiSyncService {
     );
   }
 
-  private async fetchPeople(films: Film[]) {
-    console.log('films : ', films);
+  private async fetchPlanets() {
+    const planets = await this.fetchAllPages(SwapiEndpoints.Planets);
+
+    return await this.planetService.insertMany(
+      planets.map((planet) => ({
+        ...planet,
+        rotationPeriod: convertUnknownToUndefined(planet.rotation_period),
+        orbitalPeriod: convertUnknownToUndefined(planet.orbital_period),
+        surfaceWater: planet.surface_water,
+        diameter: convertUnknownToUndefined(planet.diameter),
+        swapiUrl: planet.url,
+        population: convertUnknownToUndefined(planet.population),
+      })),
+    );
+  }
+
+  private async fetchPeople() {
+    const people = await this.fetchAllPages(SwapiEndpoints.People);
     this.peopleService.findAll();
   }
 }
