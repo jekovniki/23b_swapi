@@ -68,7 +68,7 @@ export class CreatePeopleTable1753331802910 implements MigrationInterface {
           },
           {
             name: 'swapi_url',
-            type: 'varchart',
+            type: 'varchar',
             isNullable: false,
           },
         ],

@@ -49,7 +49,7 @@ export class CreateFilmsTable1753331402305 implements MigrationInterface {
           },
           {
             name: 'swapi_url',
-            type: 'varchart',
+            type: 'varchar',
             isNullable: false,
           },
           {

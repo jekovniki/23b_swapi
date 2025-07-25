@@ -76,7 +76,7 @@ export class CreateSpeciesTable1753331874124 implements MigrationInterface {
           },
           {
             name: 'swapi_url',
-            type: 'varchart',
+            type: 'varchar',
             isNullable: false,
           },
         ],
