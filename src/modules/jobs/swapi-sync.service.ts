@@ -1,15 +1,19 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
 import { SwapiEndpoints } from './enums/swapi-sync.enum';
 import axios from 'axios';
 import https from 'https';
-import { JobsService } from './jobs.service';
+import { FilmsService } from '../films/films.service';
+import { Film } from '../films/entities/film.entity';
+import { PeopleService } from '../people/people.service';
 
 @Injectable()
 export class SwapiSyncService {
   private readonly logger = new Logger(SwapiSyncService.name);
   private readonly httpClient;
-  constructor(private readonly jobService: JobsService) {
+  constructor(
+    private readonly filmService: FilmsService,
+    private readonly peopleService: PeopleService,
+  ) {
     this.httpClient = axios.create({
       httpsAgent: new https.Agent({
         rejectUnauthorized: false,
@@ -18,39 +22,9 @@ export class SwapiSyncService {
     });
   }
 
-  @Cron(CronExpression.EVERY_DAY_AT_2AM, {
-    timeZone: 'Europe/Sofia',
-  })
-  async handleCron() {
-    this.logger.log('Running daily SWAPI Sync');
-    await this.syncSwapiData();
-    this.logger.log('Completed daily SWAPI Sync');
-  }
-
   public async syncSwapiData() {
-    const existingJobs = await this.jobService.findLast24Hours();
-    const fetchedResources = new Set(existingJobs.map((j) => j.resource));
-
-    for (const [resource, url] of Object.entries(SwapiEndpoints)) {
-      if (fetchedResources.has(resource)) {
-        this.logger.log(`${resource} already fetched. Skipping.`);
-        continue;
-      }
-
-      this.logger.log(`Fetching resource: ${resource}`);
-      try {
-        const fullResults = await this.fetchAllPages(url);
-        this.logger.log(
-          `Fetched and ready to save ${fullResults.length} ${resource} records.`,
-        );
-
-        await this.jobService.insert(resource);
-
-        this.logger.log(`Marked job complete for resource: ${resource}`);
-      } catch (err) {
-        this.logger.error(`Failed to fetch ${resource}: ${err.message}`);
-      }
-    }
+    const films = await this.fetchFilms();
+    const people = await this.fetchPeople(films);
   }
 
   private async fetchAllPages(url: string): Promise<any[]> {
@@ -69,5 +43,26 @@ export class SwapiSyncService {
     }
 
     return allResults;
+  }
+
+  private async fetchFilms() {
+    const films = await this.fetchAllPages(SwapiEndpoints.Films);
+
+    return await this.filmService.insertMany(
+      films.map((film) => ({
+        title: film.title,
+        episodeId: film.episode_id,
+        openingCrawl: film.opening_crawl,
+        director: film.director,
+        producer: film.producer,
+        releaseDate: film.release_date,
+        swapiUrl: film.url,
+      })),
+    );
+  }
+
+  private async fetchPeople(films: Film[]) {
+    console.log('films : ', films);
+    this.peopleService.findAll();
   }
 }
