@@ -3,4 +3,5 @@ export enum Gender {
   Female = 'female',
   Hermaphrodite = 'hermaphrodite',
   NotApplicable = 'n/a',
+  None = 'none',
 }

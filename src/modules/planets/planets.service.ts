@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePlanetDto } from './dto/create-planet.dto';
 import { Planet } from './entities/planet.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { FilmsService } from '../films/films.service';
 
 @Injectable()
@@ -12,20 +12,19 @@ export class PlanetsService {
     private readonly planetRepository: Repository<Planet>,
     private readonly filmService: FilmsService,
   ) {}
-  findAll() {
-    return `This action returns all planets`;
+
+  async findByUrl(url: string): Promise<Planet> {
+    // fix this
+    return (await this.planetRepository.findOneBy({
+      swapiUrl: url,
+    })) as Planet;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} planet`;
-  }
-
-  async insertMany(inputs: CreatePlanetDto[]): Promise<Planet[]> {
-    const savedPlanets: Planet[] = [];
-
+  async insertMany(inputs: CreatePlanetDto[]): Promise<void> {
     for (const input of inputs) {
       const { films, ...planetData } = input;
-      /* @todo : fix the types here,make sure that type is inherited properly */
+      /* @todo : fix the types here,make sure that type is inherited properly and you don't need to make
+      this sort of gymnastics */
       const planet = this.planetRepository.create({
         ...planetData,
         population: planetData?.population || undefined,
@@ -36,10 +35,7 @@ export class PlanetsService {
         planet.films = filmsData || [];
       }
 
-      const savedPlanet = await this.planetRepository.save(planet);
-      savedPlanets.push(savedPlanet);
+      await this.planetRepository.save(planet);
     }
-
-    return savedPlanets;
   }
 }

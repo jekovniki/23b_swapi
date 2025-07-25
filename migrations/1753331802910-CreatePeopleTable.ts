@@ -25,10 +25,12 @@ export class CreatePeopleTable1753331802910 implements MigrationInterface {
           {
             name: 'height',
             type: 'float',
+            isNullable: true,
           },
           {
             name: 'mass',
             type: 'float',
+            isNullable: true,
           },
           {
             name: 'hair_color',
@@ -49,7 +51,8 @@ export class CreatePeopleTable1753331802910 implements MigrationInterface {
           {
             name: 'gender',
             type: 'enum',
-            enum: ['male', 'female', 'hermaphrodite', 'n/a'],
+            enumName: 'people_gender_enum',
+            enum: ['male', 'female', 'hermaphrodite', 'n/a', 'none'],
           },
           {
             name: 'homeworld_id',
@@ -96,6 +99,7 @@ export class CreatePeopleTable1753331802910 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     this.logger.log('DOWN - START');
     await queryRunner.dropTable(this.table, true);
+    await queryRunner.query('DROP TYPE IF EXISTS "people_gender_enum"');
     this.logger.log('DOWN - COMPLETED');
   }
 }

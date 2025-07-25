@@ -7,11 +7,11 @@ export class PlanetsController {
 
   @Get()
   findAll() {
-    return this.planetsService.findAll();
+    return 'hi';
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.planetsService.findOne(+id);
+    return 'his';
   }
 }

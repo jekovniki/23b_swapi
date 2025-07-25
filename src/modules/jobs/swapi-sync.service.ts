@@ -51,7 +51,7 @@ export class SwapiSyncService {
   private async fetchFilms() {
     const films = await this.fetchAllPages(SwapiEndpoints.Films);
 
-    return await this.filmService.insertMany(
+    await this.filmService.insertMany(
       films.map((film) => ({
         title: film.title,
         episodeId: film.episode_id,
@@ -67,7 +67,7 @@ export class SwapiSyncService {
   private async fetchPlanets() {
     const planets = await this.fetchAllPages(SwapiEndpoints.Planets);
 
-    return await this.planetService.insertMany(
+    await this.planetService.insertMany(
       planets.map((planet) => ({
         ...planet,
         rotationPeriod: convertUnknownToUndefined(planet.rotation_period),
@@ -82,6 +82,19 @@ export class SwapiSyncService {
 
   private async fetchPeople() {
     const people = await this.fetchAllPages(SwapiEndpoints.People);
-    this.peopleService.findAll();
+
+    await this.peopleService.insertMany(
+      people.map((person) => ({
+        ...person,
+        homeworldUrl: person.homeworld,
+        hairColor: person.hair_color,
+        skinColor: person.skin_color,
+        eyeColor: person.eye_color,
+        birthYear: person.birth_year,
+        swapiUrl: person.url,
+        mass: convertUnknownToUndefined(person.mass)?.replace(/,/g, ''),
+        height: convertUnknownToUndefined(person.height),
+      })),
+    );
   }
 }

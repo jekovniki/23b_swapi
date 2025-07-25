@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { PeopleService } from './people.service';
 
 @Controller('people')
@@ -7,6 +7,6 @@ export class PeopleController {
 
   @Get()
   findAll() {
-    return this.peopleService.findAll();
+    return 'hi';
   }
 }
