@@ -60,7 +60,7 @@ export class CreatePlanetsTable1753331663148 implements MigrationInterface {
           {
             name: 'population',
             type: 'bigint',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'created_at',
@@ -71,6 +71,11 @@ export class CreatePlanetsTable1753331663148 implements MigrationInterface {
             name: 'updated_at',
             type: 'timestamptz',
             default: 'CURRENT_TIMESTAMP',
+          },
+          {
+            name: 'swapi_url',
+            type: 'varchar',
+            isNullable: false,
           },
         ],
         indices: [

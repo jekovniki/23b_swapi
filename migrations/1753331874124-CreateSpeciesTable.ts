@@ -23,13 +23,37 @@ export class CreateSpeciesTable1753331874124 implements MigrationInterface {
             isNullable: false,
           },
           {
+            name: 'classification',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
             name: 'designation',
             type: 'varchar',
             isNullable: false,
           },
           {
+            name: 'average_height',
+            type: 'varchar',
+          },
+          {
+            name: 'skin_colors',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'hair_colors',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'eye_colors',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
             name: 'average_lifespan',
-            type: 'float',
+            type: 'varchar',
           },
           {
             name: 'language',
@@ -49,6 +73,11 @@ export class CreateSpeciesTable1753331874124 implements MigrationInterface {
             name: 'updated_at',
             type: 'timestamptz',
             default: 'CURRENT_TIMESTAMP',
+          },
+          {
+            name: 'swapi_url',
+            type: 'varchar',
+            isNullable: false,
           },
         ],
         indices: [
