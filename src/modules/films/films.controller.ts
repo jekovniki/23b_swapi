@@ -15,7 +15,7 @@ export class FilmsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') params: FindFilmDto) {
+  findOne(@Param() params: FindFilmDto) {
     return this.filmsService.findById(params.id);
   }
 }
