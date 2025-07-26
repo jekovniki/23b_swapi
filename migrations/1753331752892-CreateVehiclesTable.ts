@@ -35,26 +35,32 @@ export class CreateVehiclesTable1753331752892 implements MigrationInterface {
           {
             name: 'cost_in_credits',
             type: 'bigint',
+            isNullable: true,
           },
           {
             name: 'length',
             type: 'float',
+            isNullable: true,
           },
           {
             name: 'max_atmosphering_speed',
-            type: 'int',
+            type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'crew',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'passengers',
             type: 'int',
+            isNullable: true,
           },
           {
             name: 'cargo_capacity',
-            type: 'bigint',
+            type: 'varchar',
+            isNullable: true,
           },
           {
             name: 'consumables',

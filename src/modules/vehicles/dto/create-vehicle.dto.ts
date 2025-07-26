@@ -7,7 +7,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class CreateSpaceshipDto {
+export class CreateVehicleDto {
   @IsNotEmpty()
   @IsString()
   name: string;
@@ -34,11 +34,7 @@ export class CreateSpaceshipDto {
 
   @IsNumber()
   @IsPositive()
-  minCrew: number;
-
-  @IsNumber()
-  @IsPositive()
-  maxCrew: number;
+  crew: number;
 
   @IsNumber()
   @IsPositive()
@@ -52,17 +48,9 @@ export class CreateSpaceshipDto {
   @IsNotEmpty()
   consumables: string;
 
-  @IsNumber()
-  @IsPositive()
-  hyperdriveRating: number;
-
-  @IsNumber()
-  @IsPositive()
-  mglt: number;
-
   @IsString()
   @IsNotEmpty()
-  starshipClass: string;
+  vehicleClass: string;
 
   @IsOptional()
   @IsArray()

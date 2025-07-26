@@ -39,6 +39,7 @@ export class SwapiSyncService {
     await this.fetchPeople();
     await this.fetchSpecies();
     await this.fetchStarships();
+    await this.fetchVehicles();
   }
 
   private async fetchAllPages(url: string): Promise<any[]> {
@@ -143,7 +144,7 @@ export class SwapiSyncService {
           spaceship.crew !== 'unknown'
             ? getRangeValue(spaceship.crew?.replace(/,/g, ''), 'max')
             : null,
-        cargoCapacity: convertUnknownToUndefined(spaceship.cargo_capacity),
+        cargoCapacity: spaceship.cargo_capacity,
         passengers:
           spaceship.passengers !== 'n/a'
             ? convertUnknownToUndefined(spaceship.passengers?.replace(/,/g, ''))
@@ -153,6 +154,27 @@ export class SwapiSyncService {
         ),
         mglt: convertUnknownToUndefined(spaceship.mglt),
         starshipClass: spaceship.starship_class,
+        swapiUrl: spaceship.url,
+      })),
+    );
+  }
+
+  private async fetchVehicles() {
+    const spaceships = await this.fetchAllPages(SwapiEndpoints.Vehicles);
+
+    await this.vehicleService.insertMany(
+      spaceships.map((spaceship) => ({
+        ...spaceship,
+        costInCredists: convertUnknownToUndefined(spaceship.cost_in_credits),
+        length: convertUnknownToUndefined(spaceship.length)?.replace(/,/g, ''),
+        maxAtmospheringSpeed: spaceship.max_atmosphering_speed,
+        crew: spaceship.crew?.replace(/,/g, ''),
+        cargoCapacity: spaceship.cargo_capacity,
+        passengers:
+          spaceship.passengers !== 'n/a'
+            ? convertUnknownToUndefined(spaceship.passengers?.replace(/,/g, ''))
+            : null,
+        vehicleClass: spaceship.vehicle_class,
         swapiUrl: spaceship.url,
       })),
     );

@@ -30,8 +30,8 @@ export class Vehicle {
   @Column('float', { nullable: true })
   length: number;
 
-  @Column('int', { nullable: true, name: 'max_atmosphering_speed' })
-  maxAtmospheringSpeed: number;
+  @Column('varchar', { nullable: true, name: 'max_atmosphering_speed' })
+  maxAtmospheringSpeed: string;
 
   @Column('int', { nullable: true })
   crew: number;
@@ -39,8 +39,8 @@ export class Vehicle {
   @Column('int', { nullable: true })
   passengers: number;
 
-  @Column('bigint', { nullable: true, name: 'cargo_capacity' })
-  cargoCapacity: number;
+  @Column('varchar', { nullable: true, name: 'cargo_capacity' })
+  cargoCapacity: string;
 
   @Column('varchar', { nullable: true })
   consumables: string;

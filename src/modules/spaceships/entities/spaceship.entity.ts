@@ -42,8 +42,8 @@ export class Spaceship {
   @Column('int', { nullable: true })
   passengers: number;
 
-  @Column('bigint', { nullable: true, name: 'cargo_capacity' })
-  cargoCapacity: number;
+  @Column('varchar', { nullable: true, name: 'cargo_capacity' })
+  cargoCapacity: string;
 
   @Column('varchar', { nullable: true })
   consumables: string;

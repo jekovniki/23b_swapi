@@ -70,7 +70,7 @@ export class CreateSpaceshipsTable1753331705064 implements MigrationInterface {
           },
           {
             name: 'cargo_capacity',
-            type: 'bigint',
+            type: 'varchar',
             isNullable: true,
           },
           {
