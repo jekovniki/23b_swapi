@@ -1,12 +1,16 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { FilmsService } from './films.service';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
 
-@Controller('films')
+@Controller({
+  path: 'films',
+  version: '1',
+})
 export class FilmsController {
   constructor(private readonly filmsService: FilmsService) {}
   @Get()
-  findAll() {
-    return 'hi';
+  findAll(@Query() queryParams: PaginationDto) {
+    return this.filmsService.findAll(queryParams);
   }
 
   @Get(':id')
