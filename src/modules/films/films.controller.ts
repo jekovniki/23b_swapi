@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { FilmsService } from './films.service';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { FindFilmDto } from './dto/find-film.dto';
 
 @Controller({
   path: 'films',
@@ -14,7 +15,7 @@ export class FilmsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return 'hi id';
+  findOne(@Param('id') params: FindFilmDto) {
+    return this.filmsService.findById(params.id);
   }
 }

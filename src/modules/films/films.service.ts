@@ -17,7 +17,6 @@ export class FilmsService {
     const currentPage = Math.floor(offset / limit) + 1;
 
     const [data, total] = await this.filmRepository.findAndCount({
-      // relations: ['people'],
       take: limit,
       skip: offset,
     });
@@ -30,6 +29,15 @@ export class FilmsService {
       offset,
       nextPage: currentPage < totalPages ? currentPage + 1 : null,
     };
+  }
+
+  async findById(id: number) {
+    return this.filmRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['characters', 'planets', 'starships', 'vehicles', 'species'],
+    });
   }
 
   async insertMany(inputs: CreateFilmDto[]): Promise<Film[]> {
