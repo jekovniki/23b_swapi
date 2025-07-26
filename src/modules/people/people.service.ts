@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Person } from './entities/person.entity';
 import { In, Repository } from 'typeorm';
-import { CreateFilmDto } from '../films/dto/create-film.dto';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { FilmsService } from '../films/films.service';
 import { PlanetsService } from '../planets/planets.service';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
 
 @Injectable()
 export class PeopleService {
@@ -15,6 +15,34 @@ export class PeopleService {
     private readonly filmService: FilmsService,
     private readonly planetService: PlanetsService,
   ) {}
+
+  async findAll(queryParams: PaginationDto) {
+    const { limit = 10, offset = 0 } = queryParams;
+    const currentPage = Math.floor(offset / limit) + 1;
+
+    const [data, total] = await this.peopleRepository.findAndCount({
+      take: limit,
+      skip: offset,
+    });
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data,
+      total,
+      limit,
+      offset,
+      nextPage: currentPage < totalPages ? currentPage + 1 : null,
+    };
+  }
+
+  async findById(id: number) {
+    return this.peopleRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['films', 'species', 'vehicles', 'starships'],
+    });
+  }
 
   async insertMany(inputs: CreatePersonDto[]): Promise<void> {
     for (const input of inputs) {

@@ -119,7 +119,7 @@ export class Person {
       referencedColumnName: 'id',
     },
   })
-  starship: Spaceship[];
+  starships: Spaceship[];
 
   @ManyToMany(() => Vehicle)
   @JoinTable({
@@ -133,5 +133,5 @@ export class Person {
       referencedColumnName: 'id',
     },
   })
-  pilots: Vehicle[];
+  vehicles: Vehicle[];
 }
