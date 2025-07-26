@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { SwapiSyncService } from './modules/jobs/swapi-sync.service';
+import { SwapiService } from './modules/jobs/swapi.service';
 import { Logger } from '@nestjs/common';
 
 async function seed() {
@@ -9,8 +9,8 @@ async function seed() {
   const app = await NestFactory.createApplicationContext(AppModule);
 
   try {
-    const seedService = app.get(SwapiSyncService);
-    await seedService.syncSwapiData();
+    const seedService = app.get(SwapiService);
+    await seedService.sync();
 
     logger.log('Database seeding completed successfully!');
   } catch (error) {

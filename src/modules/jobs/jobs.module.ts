@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { JobsService } from './jobs.service';
-import { SwapiSyncService } from './swapi-sync.service';
+import { SwapiService } from './swapi.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Job } from './entities/job.entity';
 import { PeopleModule } from '../people/people.module';
@@ -18,7 +18,7 @@ import { VehiclesModule } from '../vehicles/vehicles.module';
     SpeciesModule,
     VehiclesModule,
   ],
-  providers: [JobsService, SwapiSyncService],
-  exports: [JobsService, SwapiSyncService],
+  providers: [JobsService, SwapiService],
+  exports: [JobsService, SwapiService],
 })
 export class JobsModule {}

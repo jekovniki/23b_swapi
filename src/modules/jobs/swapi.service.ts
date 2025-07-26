@@ -14,8 +14,8 @@ import { SpaceshipsService } from '../spaceships/spaceships.service';
 import { VehiclesService } from '../vehicles/vehicles.service';
 
 @Injectable()
-export class SwapiSyncService {
-  private readonly logger = new Logger(SwapiSyncService.name);
+export class SwapiService {
+  private readonly logger = new Logger(SwapiService.name);
   private readonly httpClient;
   constructor(
     private readonly filmService: FilmsService,
@@ -33,7 +33,7 @@ export class SwapiSyncService {
     });
   }
 
-  public async syncSwapiData() {
+  public async sync() {
     await this.fetchFilms();
     await this.fetchPlanets();
     await this.fetchPeople();
