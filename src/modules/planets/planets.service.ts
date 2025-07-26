@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { CreatePlanetDto } from './dto/create-planet.dto';
 import { Planet } from './entities/planet.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { FilmsService } from '../films/films.service';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
 
 @Injectable()
 export class PlanetsService {
@@ -12,6 +13,35 @@ export class PlanetsService {
     private readonly planetRepository: Repository<Planet>,
     private readonly filmService: FilmsService,
   ) {}
+
+  async findAll(queryParams: PaginationDto) {
+    const { limit = 10, offset = 0 } = queryParams;
+    const currentPage = Math.floor(offset / limit) + 1;
+
+    const [data, total] = await this.planetRepository.findAndCount({
+      take: limit,
+      skip: offset,
+      relations: ['films', 'residents'],
+    });
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data,
+      total,
+      limit,
+      offset,
+      nextPage: currentPage < totalPages ? currentPage + 1 : null,
+    };
+  }
+
+  async findById(id: number) {
+    return this.planetRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['films', 'residents'],
+    });
+  }
 
   async findByUrl(url: string): Promise<Planet> {
     // fix this
