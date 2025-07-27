@@ -1,17 +1,22 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { SpaceshipsService } from './spaceships.service';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { FindSpaceshipDto } from './dto/find-spaceship.dto';
 
-@Controller('spaceships')
+@Controller({
+  path: 'spaceships',
+  version: '1',
+})
 export class SpaceshipsController {
   constructor(private readonly spaceshipsService: SpaceshipsService) {}
 
   @Get()
-  findAll() {
-    return this.spaceshipsService.findAll();
+  findAll(@Query() queryParams: PaginationDto) {
+    return this.spaceshipsService.findAll(queryParams);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.spaceshipsService.findOne(+id);
+  findOne(@Param() params: FindSpaceshipDto) {
+    return this.spaceshipsService.findById(params.id);
   }
 }

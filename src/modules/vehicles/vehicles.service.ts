@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { FilmsService } from '../films/films.service';
 import { PeopleService } from '../people/people.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
 @Injectable()
 export class VehiclesService {
   constructor(
@@ -14,12 +15,33 @@ export class VehiclesService {
     private readonly peopleService: PeopleService,
   ) {}
 
-  findAll() {
-    return `This action returns all vehicles`;
+  async findAll(queryParams: PaginationDto) {
+    const { limit = 10, offset = 0 } = queryParams;
+    const currentPage = Math.floor(offset / limit) + 1;
+
+    const [data, total] = await this.vehicleRepository.findAndCount({
+      take: limit,
+      skip: offset,
+      relations: ['films', 'pilots'],
+    });
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data,
+      total,
+      limit,
+      offset,
+      nextPage: currentPage < totalPages ? currentPage + 1 : null,
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} vehicle`;
+  async findById(id: number) {
+    return this.vehicleRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['films', 'pilots'],
+    });
   }
 
   async insertMany(inputs: CreateVehicleDto[]): Promise<void> {

@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { FilmsService } from '../films/films.service';
 import { PlanetsService } from '../planets/planets.service';
 import { PeopleService } from '../people/people.service';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
 
 @Injectable()
 export class SpeciesService {
@@ -17,12 +18,33 @@ export class SpeciesService {
     private readonly peopleService: PeopleService,
   ) {}
 
-  findAll() {
-    return `This action returns all species`;
+  async findAll(queryParams: PaginationDto) {
+    const { limit = 10, offset = 0 } = queryParams;
+    const currentPage = Math.floor(offset / limit) + 1;
+
+    const [data, total] = await this.speciesRepository.findAndCount({
+      take: limit,
+      skip: offset,
+      relations: ['films', 'people'],
+    });
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      data,
+      total,
+      limit,
+      offset,
+      nextPage: currentPage < totalPages ? currentPage + 1 : null,
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} species`;
+  async findById(id: number) {
+    return this.speciesRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['films', 'people'],
+    });
   }
 
   async insertMany(inputs: CreateSpeciesDto[]): Promise<void> {
