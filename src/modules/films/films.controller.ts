@@ -2,6 +2,8 @@ import { Controller, Get, Param, Query } from '@nestjs/common';
 import { FilmsService } from './films.service';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
 import { FindFilmDto } from './dto/find-film.dto';
+import { BaseSortingDto } from 'src/shared/dto/base-sorting.dto';
+import { FilmSortingDto } from './dto/film-sorting.dto';
 
 @Controller({
   path: 'films',
@@ -10,7 +12,7 @@ import { FindFilmDto } from './dto/find-film.dto';
 export class FilmsController {
   constructor(private readonly filmsService: FilmsService) {}
   @Get()
-  findAll(@Query() queryParams: PaginationDto) {
+  findAll(@Query() queryParams: PaginationDto & FilmSortingDto) {
     return this.filmsService.findAll(queryParams);
   }
 

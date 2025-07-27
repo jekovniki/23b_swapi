@@ -4,6 +4,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Film } from './entities/film.entity';
 import { In, Repository } from 'typeorm';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { SortOrder } from 'src/shared/dto/basic.enum';
+import { FilmSortableFields } from './dto/film.enum';
+import { FilmSortingDto } from './dto/film-sorting.dto';
 
 @Injectable()
 export class FilmsService {
@@ -12,13 +15,22 @@ export class FilmsService {
     private readonly filmRepository: Repository<Film>,
   ) {}
 
-  async findAll(queryParams: PaginationDto) {
-    const { limit = 10, offset = 0 } = queryParams;
+  async findAll(queryParams: PaginationDto & FilmSortingDto) {
+    const {
+      limit = 10,
+      offset = 0,
+      order = SortOrder.Ascending,
+      sortBy = FilmSortableFields.ID,
+    } = queryParams;
     const currentPage = Math.floor(offset / limit) + 1;
+
+    const orderBy: Record<string, 'ASC' | 'DESC'> = {};
+    orderBy[sortBy] = order.toUpperCase() as 'ASC' | 'DESC';
 
     const [data, total] = await this.filmRepository.findAndCount({
       take: limit,
       skip: offset,
+      order: orderBy,
     });
     const totalPages = Math.ceil(total / limit);
 

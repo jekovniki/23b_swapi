@@ -5,3 +5,8 @@ export enum Gender {
   NotApplicable = 'n/a',
   None = 'none',
 }
+
+export enum SortOrder {
+  Ascending = 'asc',
+  Descending = 'desc',
+}
