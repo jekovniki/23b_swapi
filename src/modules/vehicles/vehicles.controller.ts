@@ -15,7 +15,8 @@ export class VehiclesController {
 
   @Get()
   findAll(
-    @Query() queryParams: PaginationDto & VehiclesSortingDto,
+    @Query() paginationParams: PaginationDto,
+    @Query() sortingParams: VehiclesSortingDto,
     @FilteringParams([
       'id',
       'name',
@@ -32,7 +33,11 @@ export class VehiclesController {
     ])
     filters?: Filtering[],
   ) {
-    return this.vehiclesService.findAll(queryParams, filters);
+    return this.vehiclesService.findAll(
+      paginationParams,
+      sortingParams,
+      filters,
+    );
   }
 
   @Get(':id')

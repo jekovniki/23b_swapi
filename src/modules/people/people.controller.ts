@@ -15,7 +15,8 @@ export class PeopleController {
 
   @Get()
   findAll(
-    @Query() queryParams: PaginationDto & PeopleSortingDto,
+    @Query() paginationParams: PaginationDto,
+    @Query() sortingParams: PeopleSortingDto,
     @FilteringParams([
       'name',
       'height',
@@ -28,7 +29,7 @@ export class PeopleController {
     ])
     filters?: Filtering[],
   ) {
-    return this.peopleService.findAll(queryParams, filters);
+    return this.peopleService.findAll(paginationParams, sortingParams, filters);
   }
 
   @Get(':id')

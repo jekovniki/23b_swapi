@@ -21,15 +21,13 @@ export class VehiclesService {
   ) {}
 
   async findAll(
-    queryParams: PaginationDto & VehiclesSortingDto,
+    paginationParams: PaginationDto,
+    sortingParams: VehiclesSortingDto,
     filters?: Filtering[],
   ) {
-    const {
-      limit = 10,
-      offset = 0,
-      order = SortOrder.Ascending,
-      sortBy = VehiclesSortableFields.ID,
-    } = queryParams;
+    const { limit = 10, offset = 0 } = paginationParams;
+    const { order = SortOrder.Ascending, sortBy = VehiclesSortableFields.ID } =
+      sortingParams;
     const currentPage = Math.floor(offset / limit) + 1;
     let where = {};
     if (filters && filters?.length) {

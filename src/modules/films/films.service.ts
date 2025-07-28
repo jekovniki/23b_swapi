@@ -18,15 +18,13 @@ export class FilmsService {
   ) {}
 
   async findAll(
-    queryParams: PaginationDto & FilmSortingDto,
+    paginationParams: PaginationDto,
+    sortingParams: FilmSortingDto,
     filters?: Filtering[],
   ) {
-    const {
-      limit = 10,
-      offset = 0,
-      order = SortOrder.Ascending,
-      sortBy = FilmSortableFields.ID,
-    } = queryParams;
+    const { limit = 10, offset = 0 } = paginationParams;
+    const { order = SortOrder.Ascending, sortBy = FilmSortableFields.ID } =
+      sortingParams;
     let where = {};
     if (filters && filters?.length) {
       where = filters.reduce((acc, filter) => {

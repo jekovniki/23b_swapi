@@ -15,7 +15,8 @@ export class PlanetsController {
 
   @Get()
   findAll(
-    @Query() queryParams: PaginationDto & PlanetsSortingDto,
+    @Query() paginationParams: PaginationDto,
+    @Query() sortingParams: PlanetsSortingDto,
     @FilteringParams([
       'name',
       'rotationPeriod',
@@ -29,7 +30,11 @@ export class PlanetsController {
     ])
     filters?: Filtering[],
   ) {
-    return this.planetsService.findAll(queryParams, filters);
+    return this.planetsService.findAll(
+      paginationParams,
+      sortingParams,
+      filters,
+    );
   }
 
   @Get(':id')

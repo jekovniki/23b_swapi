@@ -15,7 +15,8 @@ export class SpeciesController {
 
   @Get()
   findAll(
-    @Query() queryParams: PaginationDto & SpeciesSortingDto,
+    @Query() paginationParams: PaginationDto,
+    @Query() sortingParams: SpeciesSortingDto,
     @FilteringParams([
       'id',
       'name',
@@ -30,7 +31,11 @@ export class SpeciesController {
     ])
     filters?: Filtering[],
   ) {
-    return this.speciesService.findAll(queryParams, filters);
+    return this.speciesService.findAll(
+      paginationParams,
+      sortingParams,
+      filters,
+    );
   }
 
   @Get(':id')

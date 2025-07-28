@@ -20,15 +20,13 @@ export class PlanetsService {
   ) {}
 
   async findAll(
-    queryParams: PaginationDto & PlanetsSortingDto,
+    paginationParams: PaginationDto,
+    sortingParams: PlanetsSortingDto,
     filters?: Filtering[],
   ) {
-    const {
-      limit = 10,
-      offset = 0,
-      order = SortOrder.Ascending,
-      sortBy = PlanetsSortableFields.ID,
-    } = queryParams;
+    const { limit = 10, offset = 0 } = paginationParams;
+    const { order = SortOrder.Ascending, sortBy = PlanetsSortableFields.ID } =
+      sortingParams;
     let where = {};
     if (filters && filters?.length) {
       where = filters.reduce((acc, filter) => {

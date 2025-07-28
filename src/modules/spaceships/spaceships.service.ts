@@ -22,9 +22,15 @@ export class SpaceshipsService {
   ) {}
 
   async findAll(
-    queryParams: PaginationDto & SpaceshipsSortingDto,
+    paginationParams: PaginationDto,
+    sortingParams: SpaceshipsSortingDto,
     filters?: Filtering[],
   ) {
+    const { limit = 10, offset = 0 } = paginationParams;
+    const {
+      order = SortOrder.Ascending,
+      sortBy = SpaceshipsSortableFields.ID,
+    } = sortingParams;
     let where = {};
     if (filters && filters?.length) {
       where = filters.reduce((acc, filter) => {
@@ -32,12 +38,6 @@ export class SpaceshipsService {
         return { ...acc, ...filterWhere };
       }, {});
     }
-    const {
-      limit = 10,
-      offset = 0,
-      order = SortOrder.Ascending,
-      sortBy = SpaceshipsSortableFields.ID,
-    } = queryParams;
     const currentPage = Math.floor(offset / limit) + 1;
 
     const orderBy: Record<string, 'ASC' | 'DESC'> = {};

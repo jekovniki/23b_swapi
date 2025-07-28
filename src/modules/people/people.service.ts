@@ -22,15 +22,13 @@ export class PeopleService {
   ) {}
 
   async findAll(
-    queryParams: PaginationDto & PeopleSortingDto,
+    paginationParams: PaginationDto,
+    sortingParams: PeopleSortingDto,
     filters?: Filtering[],
   ) {
-    const {
-      limit = 10,
-      offset = 0,
-      order = SortOrder.Ascending,
-      sortBy = PeopleSortableFields.ID,
-    } = queryParams;
+    const { limit = 10, offset = 0 } = paginationParams;
+    const { order = SortOrder.Ascending, sortBy = PeopleSortableFields.ID } =
+      sortingParams;
     let where = {};
     if (filters && filters?.length) {
       where = filters.reduce((acc, filter) => {

@@ -14,7 +14,8 @@ export class FilmsController {
   constructor(private readonly filmsService: FilmsService) {}
   @Get()
   findAll(
-    @Query() queryParams: PaginationDto & FilmSortingDto,
+    @Query() paginationParams: PaginationDto,
+    @Query() sortingParams: FilmSortingDto,
     @FilteringParams([
       'title',
       'director',
@@ -24,7 +25,7 @@ export class FilmsController {
     ])
     filters?: Filtering[],
   ) {
-    return this.filmsService.findAll(queryParams, filters);
+    return this.filmsService.findAll(paginationParams, sortingParams, filters);
   }
 
   @Get(':id')

@@ -15,7 +15,8 @@ export class SpaceshipsController {
 
   @Get()
   findAll(
-    @Query() queryParams: PaginationDto & SpaceshipsSortingDto,
+    @Query() paginationParams: PaginationDto,
+    @Query() sortingParams: SpaceshipsSortingDto,
     @FilteringParams([
       'name',
       'model',
@@ -34,7 +35,11 @@ export class SpaceshipsController {
     ])
     filters?: Filtering[],
   ) {
-    return this.spaceshipsService.findAll(queryParams, filters);
+    return this.spaceshipsService.findAll(
+      paginationParams,
+      sortingParams,
+      filters,
+    );
   }
 
   @Get(':id')
