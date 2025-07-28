@@ -1,9 +1,9 @@
-import { Transform } from 'class-transformer';
-import { IsNotEmpty, IsNumberString } from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsInt, IsNotEmpty } from 'class-validator';
 
 export class FindPlanetDto {
   @IsNotEmpty()
-  @IsNumberString({}, { message: 'ID must be a valid number' })
-  @Transform(({ value }) => Number(value))
+  @IsInt({ message: 'ID must be a valid integer' })
+  @Type(() => Number)
   id: number;
 }
