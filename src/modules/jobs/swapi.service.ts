@@ -146,7 +146,7 @@ export class SwapiService {
     await this.spaceshipService.upsert(
       spaceships.map((spaceship) => ({
         ...spaceship,
-        costInCredists: spaceship.cost_in_credits,
+        costInCredits: convertUnknownToUndefined(spaceship.cost_in_credits),
         length: convertUnknownToUndefined(spaceship.length)?.replace(/,/g, ''),
         maxAtmospheringSpeed: spaceship.max_atmosphering_speed,
         minCrew:
@@ -178,7 +178,7 @@ export class SwapiService {
     await this.vehicleService.upsert(
       spaceships.map((spaceship) => ({
         ...spaceship,
-        costInCredists: spaceship.cost_in_credits,
+        costInCredits: convertUnknownToUndefined(spaceship.cost_in_credits),
         length: convertUnknownToUndefined(spaceship.length)?.replace(/,/g, ''),
         maxAtmospheringSpeed: spaceship.max_atmosphering_speed,
         crew: spaceship.crew?.replace(/,/g, ''),
