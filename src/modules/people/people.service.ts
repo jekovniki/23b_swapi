@@ -6,6 +6,11 @@ import { CreatePersonDto } from './dto/create-person.dto';
 import { FilmsService } from '../films/films.service';
 import { PlanetsService } from '../planets/planets.service';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { Filtering } from 'src/shared/interface/basic.interface';
+import { getWhere } from 'src/shared/utils/helpers.util';
+import { PeopleSortableFields } from './enum/people.enum';
+import { SortOrder } from 'src/shared/enum/basic.enum';
+import { PeopleSortingDto } from './dto/people-sorting.dto';
 
 @Injectable()
 export class PeopleService {
@@ -16,22 +21,36 @@ export class PeopleService {
     private readonly planetService: PlanetsService,
   ) {}
 
-  async findAll(queryParams: PaginationDto) {
-    const { limit = 10, offset = 0 } = queryParams;
+  async findAll(
+    queryParams: PaginationDto & PeopleSortingDto,
+    filters?: Filtering,
+  ) {
+    const {
+      limit = 10,
+      offset = 0,
+      order = SortOrder.Ascending,
+      sortBy = PeopleSortableFields.ID,
+    } = queryParams;
+    const where = filters ? getWhere(filters) : {};
     const currentPage = Math.floor(offset / limit) + 1;
 
+    const orderBy: Record<string, 'ASC' | 'DESC'> = {};
+    orderBy[sortBy] = order.toUpperCase() as 'ASC' | 'DESC';
+
     const [data, total] = await this.peopleRepository.findAndCount({
+      where,
       take: limit,
       skip: offset,
+      order: orderBy,
     });
     const totalPages = Math.ceil(total / limit);
 
     return {
-      data,
       total,
+      nextPage: currentPage < totalPages ? currentPage + 1 : null,
+      data,
       limit,
       offset,
-      nextPage: currentPage < totalPages ? currentPage + 1 : null,
     };
   }
 

@@ -27,11 +27,11 @@ export class VehiclesService {
     const totalPages = Math.ceil(total / limit);
 
     return {
-      data,
       total,
+      nextPage: currentPage < totalPages ? currentPage + 1 : null,
+      data,
       limit,
       offset,
-      nextPage: currentPage < totalPages ? currentPage + 1 : null,
     };
   }
 
