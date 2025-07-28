@@ -735,7 +735,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{BACKEND_URL}}/api/v1/vehicles?filter=minCrew:gt:5&filter=maxCrew:lt:200",
+									"raw": "{{BACKEND_URL}}/api/v1/vehicles?filter=crew:gt:5&filter=crew:lt:200",
 									"host": [
 										"{{BACKEND_URL}}"
 									],
@@ -747,11 +747,11 @@
 									"query": [
 										{
 											"key": "filter",
-											"value": "minCrew:gt:5"
+											"value": "crew:gt:5"
 										},
 										{
 											"key": "filter",
-											"value": "maxCrew:lt:200"
+											"value": "crew:lt:200"
 										}
 									]
 								}
@@ -773,6 +773,89 @@
 										"v1",
 										"vehicles",
 										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Auth",
+					"item": [
+						{
+							"name": "Sign In",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"test@yopmail.com\",\n    \"password\": \"Aa123456!\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/auth/sign-in",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"sign-in"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Sign Up",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\": \"test@yopmail.com\",\n    \"password\": \"Aa123456!\",\n    \"roleId\": 1 // You can fetch the roleIds from the role endpoint it is public\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/auth/sign-up",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"sign-up"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Roles",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/auth/role",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"auth",
+										"role"
 									]
 								}
 							},

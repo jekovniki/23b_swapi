@@ -5,6 +5,7 @@ import { FindSpaceshipDto } from './dto/find-spaceship.dto';
 import { SpaceshipsSortingDto } from './dto/spaceship-sorting.dto';
 import { FilteringParams } from '../../shared/decorators/filtering-params.decorator';
 import { Filtering } from '../../shared/interface/basic.interface';
+import { Permission } from '../../shared/decorators/permission.decorator';
 
 @Controller({
   path: 'spaceships',
@@ -14,6 +15,7 @@ export class SpaceshipsController {
   constructor(private readonly spaceshipsService: SpaceshipsService) {}
 
   @Get()
+  @Permission('spaceships:READ')
   findAll(
     @Query() paginationParams: PaginationDto,
     @Query() sortingParams: SpaceshipsSortingDto,
@@ -43,6 +45,7 @@ export class SpaceshipsController {
   }
 
   @Get(':id')
+  @Permission('spaceships:READ')
   findOne(@Param() params: FindSpaceshipDto) {
     return this.spaceshipsService.findById(params.id);
   }

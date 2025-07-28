@@ -5,6 +5,7 @@ import { FindSpaceshipDto } from '../spaceships/dto/find-spaceship.dto';
 import { SpeciesSortingDto } from './dto/species-sorting.dto';
 import { FilteringParams } from '../../shared/decorators/filtering-params.decorator';
 import { Filtering } from '../../shared/interface/basic.interface';
+import { Permission } from '../../shared/decorators/permission.decorator';
 
 @Controller({
   path: 'species',
@@ -14,6 +15,7 @@ export class SpeciesController {
   constructor(private readonly speciesService: SpeciesService) {}
 
   @Get()
+  @Permission('species:READ')
   findAll(
     @Query() paginationParams: PaginationDto,
     @Query() sortingParams: SpeciesSortingDto,
@@ -39,6 +41,7 @@ export class SpeciesController {
   }
 
   @Get(':id')
+  @Permission('species:READ')
   findOne(@Param() params: FindSpaceshipDto) {
     return this.speciesService.findById(params.id);
   }

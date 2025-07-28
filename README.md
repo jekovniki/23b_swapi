@@ -24,6 +24,22 @@ After the setup you can start the project any time (when you have the infra runn
 
 Inside of the repository there is a **postman.json** file that you can import so you get a preset of all api calls and examples. (Yep, I didn't do swagger)
 
+## Authentication
+
+There are endpoints for register (sign-up), login(sign-in) and roles. You need to create an account in order to fetch the data. There are multiple roles (it's RBA). The role are:
+
+```bash
+1 - Administrator # can fetch everything
+2 - Films # can read only films
+3 - People # can read only people
+4 - Planets # can read only planets
+5 - Spaceships # can read only spaceships
+6 - Species # can read only species
+7 - Vehicles # can read only species
+```
+
+If you add the @IsPublic decorator you will make the api public
+
 ### Pagination
 
 You have two query params for the pagination: `offset` and `limit`. **Limit** is the amount of items that you will fetch and **offset** is the starting position.

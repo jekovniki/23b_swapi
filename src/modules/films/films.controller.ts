@@ -5,6 +5,7 @@ import { FindFilmDto } from './dto/find-film.dto';
 import { FilmSortingDto } from './dto/film-sorting.dto';
 import { FilteringParams } from '../../shared/decorators/filtering-params.decorator';
 import { Filtering } from '../../shared/interface/basic.interface';
+import { Permission } from '../../shared/decorators/permission.decorator';
 
 @Controller({
   path: 'films',
@@ -12,7 +13,9 @@ import { Filtering } from '../../shared/interface/basic.interface';
 })
 export class FilmsController {
   constructor(private readonly filmsService: FilmsService) {}
+
   @Get()
+  @Permission('films:READ')
   findAll(
     @Query() paginationParams: PaginationDto,
     @Query() sortingParams: FilmSortingDto,
@@ -29,6 +32,7 @@ export class FilmsController {
   }
 
   @Get(':id')
+  @Permission('films:READ')
   findOne(@Param() params: FindFilmDto) {
     return this.filmsService.findById(params.id);
   }
