@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
-import { SortOrder } from './basic.enum';
+import { SortOrder } from '../enum/basic.enum';
 
 export class BaseSortingDto {
   @IsOptional()

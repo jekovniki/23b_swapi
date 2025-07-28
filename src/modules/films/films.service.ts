@@ -4,9 +4,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Film } from './entities/film.entity';
 import { In, Repository } from 'typeorm';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { SortOrder } from 'src/shared/dto/basic.enum';
-import { FilmSortableFields } from './dto/film.enum';
+import { SortOrder } from 'src/shared/enum/basic.enum';
+import { FilmSortableFields } from './enum/film.enum';
 import { FilmSortingDto } from './dto/film-sorting.dto';
+import { Filtering } from 'src/shared/interface/basic.interface';
+import { getWhere } from 'src/shared/utils/helpers.util';
 
 @Injectable()
 export class FilmsService {
@@ -15,19 +17,24 @@ export class FilmsService {
     private readonly filmRepository: Repository<Film>,
   ) {}
 
-  async findAll(queryParams: PaginationDto & FilmSortingDto) {
+  async findAll(
+    queryParams: PaginationDto & FilmSortingDto,
+    filter?: Filtering,
+  ) {
     const {
       limit = 10,
       offset = 0,
       order = SortOrder.Ascending,
       sortBy = FilmSortableFields.ID,
     } = queryParams;
+    const where = filter ? getWhere(filter) : {};
     const currentPage = Math.floor(offset / limit) + 1;
 
     const orderBy: Record<string, 'ASC' | 'DESC'> = {};
     orderBy[sortBy] = order.toUpperCase() as 'ASC' | 'DESC';
 
     const [data, total] = await this.filmRepository.findAndCount({
+      where,
       take: limit,
       skip: offset,
       order: orderBy,
