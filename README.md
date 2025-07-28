@@ -49,3 +49,28 @@ Example:
 ```
 
 ### Filtering
+
+The filtering is dynamic and it supports text in a specific order. Parameter is `filter` and the value should follow the following semantics `column:operation:value`. Columns are predetermined in the controller for each method. Operations are as follows:
+
+```bash
+eq # EQUALS
+neq # NOT EQUALS
+gt # GREATER THAN
+gte # GREATER THAN OR EQUALS
+lt # LESS THAN
+lte # LESS THAN OR EQUALS
+like # LIKE
+nlike # NOT LIKE
+in # IN
+nin # NOT IN
+isnull # IS NULL
+isnotnull # IS NOT NULL
+```
+
+Example filters
+
+```bash
+/api/v1/films?filter=openingCrawl:like:Luke&filter=director:like:Irvin # going to filter the results by openingCrawl which has the word 'Luke' inside AND where the director name has 'Irvin'
+
+/api/v1/spaceships?filter=minCrew:gt:5&filter=maxCrew:lt:200 # going to filter the results by speciships that has at least 5 members in crew but less than 200 members
+```
