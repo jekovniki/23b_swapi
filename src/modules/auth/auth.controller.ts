@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -13,6 +14,8 @@ import { Token } from './enum/token.enum';
 import { getExpirationTime } from './util/auth.util';
 import { ConfigService } from '@nestjs/config';
 import { SignUpDto } from './dto/sign-up.dto';
+import { RoleService } from './role.service';
+import { Public } from '../../shared/decorators/public.decorator';
 
 @Controller({
   path: 'auth',
@@ -22,10 +25,11 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
+    private readonly roleService: RoleService,
   ) {}
 
   @Post('/sign-in')
-  // @Public()
+  @Public()
   @HttpCode(HttpStatus.OK)
   async signIn(
     @Body() credentials: SignInDto,
@@ -52,7 +56,14 @@ export class AuthController {
   }
 
   @Post('/sign-up')
+  @Public()
   async signUp(@Body() credentials: SignUpDto) {
     return await this.authService.signUp(credentials);
+  }
+
+  @Get('/role')
+  @Public()
+  async findAll() {
+    return this.roleService.findAll();
   }
 }

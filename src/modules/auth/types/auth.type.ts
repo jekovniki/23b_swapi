@@ -18,3 +18,8 @@ export type SessionDataResponse = {
   refreshToken: string;
   accessToken: string;
 };
+
+export interface UserData {
+  permissions: string[];
+  id: string;
+}

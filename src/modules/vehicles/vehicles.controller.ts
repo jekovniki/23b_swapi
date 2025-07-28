@@ -5,6 +5,7 @@ import { FindVehicleDto } from './dto/find-vehicle.dto';
 import { VehiclesSortingDto } from './dto/vehicles-sorting.dto';
 import { FilteringParams } from '../../shared/decorators/filtering-params.decorator';
 import { Filtering } from '../../shared/interface/basic.interface';
+import { Permission } from '../../shared/decorators/permission.decorator';
 
 @Controller({
   path: 'vehicles',
@@ -14,6 +15,7 @@ export class VehiclesController {
   constructor(private readonly vehiclesService: VehiclesService) {}
 
   @Get()
+  @Permission('vehicles:READ')
   findAll(
     @Query() paginationParams: PaginationDto,
     @Query() sortingParams: VehiclesSortingDto,
@@ -41,6 +43,7 @@ export class VehiclesController {
   }
 
   @Get(':id')
+  @Permission('vehicles:READ')
   findOne(@Param() params: FindVehicleDto) {
     return this.vehiclesService.findById(params.id);
   }
