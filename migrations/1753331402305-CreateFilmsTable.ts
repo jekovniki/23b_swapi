@@ -51,6 +51,7 @@ export class CreateFilmsTable1753331402305 implements MigrationInterface {
             name: 'swapi_url',
             type: 'varchar',
             isNullable: false,
+            isUnique: true,
           },
           {
             name: 'created_at',
