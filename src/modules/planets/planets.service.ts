@@ -5,6 +5,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FilmsService } from '../films/films.service';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { Filtering } from 'src/shared/interface/basic.interface';
+import { SortOrder } from 'src/shared/enum/basic.enum';
+import { PlanetsSortableFields } from './enum/planets.enum';
+import { PlanetsSortingDto } from './dto/planets-sorting.dto';
+import { getWhere } from 'src/shared/utils/helpers.util';
 
 @Injectable()
 export class PlanetsService {
@@ -14,11 +19,25 @@ export class PlanetsService {
     private readonly filmService: FilmsService,
   ) {}
 
-  async findAll(queryParams: PaginationDto) {
-    const { limit = 10, offset = 0 } = queryParams;
+  async findAll(
+    queryParams: PaginationDto & PlanetsSortingDto,
+    filters?: Filtering,
+  ) {
+    const {
+      limit = 10,
+      offset = 0,
+      order = SortOrder.Ascending,
+      sortBy = PlanetsSortableFields.ID,
+    } = queryParams;
+    const where = filters ? getWhere(filters) : {};
     const currentPage = Math.floor(offset / limit) + 1;
 
+    const orderBy: Record<string, 'ASC' | 'DESC'> = {};
+    orderBy[sortBy] = order.toUpperCase() as 'ASC' | 'DESC';
+
     const [data, total] = await this.planetRepository.findAndCount({
+      where,
+      order: orderBy,
       take: limit,
       skip: offset,
       relations: ['films', 'residents'],
@@ -27,10 +46,10 @@ export class PlanetsService {
 
     return {
       total,
-      nextPage: currentPage < totalPages ? currentPage + 1 : null,
-      data,
       limit,
       offset,
+      nextPage: currentPage < totalPages ? currentPage + 1 : null,
+      data,
     };
   }
 
