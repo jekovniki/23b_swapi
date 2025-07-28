@@ -7,6 +7,13 @@ import { FilmsService } from '../films/films.service';
 import { PlanetsService } from '../planets/planets.service';
 import { PeopleService } from '../people/people.service';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { Filtering } from 'src/shared/interface/basic.interface';
+import { SpaceshipsSortingDto } from '../spaceships/dto/spaceship-sorting.dto';
+import { SortOrder } from 'src/shared/enum/basic.enum';
+import { SpaceshipsSortableFields } from '../spaceships/enum/spaceships.enum';
+import { SpeciesSortableFields } from './enum/species.enum';
+import { SpeciesSortingDto } from './dto/species-sorting.dto';
+import { getWhere } from 'src/shared/utils/helpers.util';
 
 @Injectable()
 export class SpeciesService {
@@ -18,11 +25,24 @@ export class SpeciesService {
     private readonly peopleService: PeopleService,
   ) {}
 
-  async findAll(queryParams: PaginationDto) {
-    const { limit = 10, offset = 0 } = queryParams;
+  async findAll(
+    queryParams: PaginationDto & SpeciesSortingDto,
+    filters?: Filtering,
+  ) {
+    const {
+      limit = 10,
+      offset = 0,
+      order = SortOrder.Ascending,
+      sortBy = SpeciesSortableFields.ID,
+    } = queryParams;
     const currentPage = Math.floor(offset / limit) + 1;
+    const where = filters ? getWhere(filters) : {};
+    const orderBy: Record<string, 'ASC' | 'DESC'> = {};
+    orderBy[sortBy] = order.toUpperCase() as 'ASC' | 'DESC';
 
     const [data, total] = await this.speciesRepository.findAndCount({
+      where,
+      order: orderBy,
       take: limit,
       skip: offset,
       relations: ['films', 'people'],
@@ -32,9 +52,9 @@ export class SpeciesService {
     return {
       total,
       nextPage: currentPage < totalPages ? currentPage + 1 : null,
-      data,
       limit,
       offset,
+      data,
     };
   }
 
