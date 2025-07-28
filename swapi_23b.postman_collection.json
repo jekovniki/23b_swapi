@@ -1,0 +1,815 @@
+{
+	"info": {
+		"_postman_id": "e98fde64-d45c-4a87-86c0-a27ffff0ae35",
+		"name": "SWAPI 23b",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20665867",
+		"_collection_link": "https://solar-capsule-381858.postman.co/workspace/My-Workspace~8bc6edd2-7a21-4f9d-8f4f-cfcbad65344f/collection/20665867-e98fde64-d45c-4a87-86c0-a27ffff0ae35?action=share&source=collection_link&creator=20665867"
+	},
+	"item": [
+		{
+			"name": "v1",
+			"item": [
+				{
+					"name": "Film",
+					"item": [
+						{
+							"name": "All (Default)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/films",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"films"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Paginated)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/films?limit=3&offset=3",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"films"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "3"
+										},
+										{
+											"key": "offset",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Sorting)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/films?order=desc&sortBy=name",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"films"
+									],
+									"query": [
+										{
+											"key": "order",
+											"value": "desc"
+										},
+										{
+											"key": "sortBy",
+											"value": "name"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Filtering)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/films?filter=openingCrawl:like:Luke&filter=director:like:Irvin",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"films"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "openingCrawl:like:Luke"
+										},
+										{
+											"key": "filter",
+											"value": "director:like:Irvin"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/films/1",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"films",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "People",
+					"item": [
+						{
+							"name": "All (Default)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/people",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"people"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Paginated)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/people?limit=10&offset=0",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"people"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Sorting)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/people?order=desc&sortBy=name",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"people"
+									],
+									"query": [
+										{
+											"key": "order",
+											"value": "desc"
+										},
+										{
+											"key": "sortBy",
+											"value": "name"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Filtering)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/people?filter=height:lt:170",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"people"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "height:lt:170"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/people/1",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"people",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Planets",
+					"item": [
+						{
+							"name": "All (Default)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/planets",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"planets"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Paginated)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/planets?limit=25&offset=25",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"planets"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "25"
+										},
+										{
+											"key": "offset",
+											"value": "25"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Sorting)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/planets?order=desc&sortBy=name",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"planets"
+									],
+									"query": [
+										{
+											"key": "order",
+											"value": "desc"
+										},
+										{
+											"key": "sortBy",
+											"value": "name"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Filtering)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/planets?filter=rotationPeriod:gt:23",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"planets"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "rotationPeriod:gt:23"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/planets/1",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"planets",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Species",
+					"item": [
+						{
+							"name": "All (Default)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/species",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"species"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Paginated)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/species?limit=10&offset=0",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"species"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Sorting)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/species?order=desc&sortBy=language",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"species"
+									],
+									"query": [
+										{
+											"key": "order",
+											"value": "desc"
+										},
+										{
+											"key": "sortBy",
+											"value": "language"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Filtering)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/species?filter=eyeColors:like:red",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"species"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "eyeColors:like:red"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/species/1",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"species",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Spaceships",
+					"item": [
+						{
+							"name": "All (Default)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/spaceships",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaceships"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Paginated)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/spaceships?limit=20&offset=0",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaceships"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "20"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Sorting)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/spaceships?order=asc&sortBy=manufacturer",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaceships"
+									],
+									"query": [
+										{
+											"key": "order",
+											"value": "asc"
+										},
+										{
+											"key": "sortBy",
+											"value": "manufacturer"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Filtering)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/spaceships?filter=minCrew:gt:200",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaceships"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "minCrew:gt:200"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/spaceships/1",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"spaceships",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Vehicles",
+					"item": [
+						{
+							"name": "All (Default)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/vehicles",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"vehicles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Paginated)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/vehicles?limit=10&offset=0",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"vehicles"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "10"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Sorting)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/vehicles?order=desc&sortBy=manufacturer",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"vehicles"
+									],
+									"query": [
+										{
+											"key": "order",
+											"value": "desc"
+										},
+										{
+											"key": "sortBy",
+											"value": "manufacturer"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "All (Filtering)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/vehicles?filter=minCrew:gt:5&filter=maxCrew:lt:200",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"vehicles"
+									],
+									"query": [
+										{
+											"key": "filter",
+											"value": "minCrew:gt:5"
+										},
+										{
+											"key": "filter",
+											"value": "maxCrew:lt:200"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BACKEND_URL}}/api/v1/vehicles/1",
+									"host": [
+										"{{BACKEND_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"vehicles",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BACKEND_URL",
+			"value": "http:/localhost:3000",
+			"type": "string"
+		}
+	]
+}
