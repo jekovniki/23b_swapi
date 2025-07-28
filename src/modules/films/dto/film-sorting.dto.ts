@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional } from 'class-validator';
-import { BaseSortingDto } from 'src/shared/dto/base-sorting.dto';
+import { BaseSortingDto } from '../../../shared/dto/base-sorting.dto';
 import { FilmSortableFields } from '../enum/film.enum';
 
 export class FilmSortingDto extends BaseSortingDto {

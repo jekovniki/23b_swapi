@@ -6,14 +6,12 @@ import { Repository } from 'typeorm';
 import { FilmsService } from '../films/films.service';
 import { PlanetsService } from '../planets/planets.service';
 import { PeopleService } from '../people/people.service';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { Filtering } from 'src/shared/interface/basic.interface';
-import { SpaceshipsSortingDto } from '../spaceships/dto/spaceship-sorting.dto';
-import { SortOrder } from 'src/shared/enum/basic.enum';
-import { SpaceshipsSortableFields } from '../spaceships/enum/spaceships.enum';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
+import { Filtering } from '../../shared/interface/basic.interface';
+import { SortOrder } from '../../shared/enum/basic.enum';
 import { SpeciesSortableFields } from './enum/species.enum';
 import { SpeciesSortingDto } from './dto/species-sorting.dto';
-import { getWhere } from 'src/shared/utils/helpers.util';
+import { getWhere } from '../../shared/utils/helpers.util';
 
 @Injectable()
 export class SpeciesService {

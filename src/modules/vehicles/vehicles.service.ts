@@ -5,12 +5,12 @@ import { Repository } from 'typeorm';
 import { FilmsService } from '../films/films.service';
 import { PeopleService } from '../people/people.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
 import { VehiclesSortingDto } from './dto/vehicles-sorting.dto';
-import { Filtering } from 'src/shared/interface/basic.interface';
-import { SortOrder } from 'src/shared/enum/basic.enum';
+import { Filtering } from '../../shared/interface/basic.interface';
+import { SortOrder } from '../../shared/enum/basic.enum';
 import { VehiclesSortableFields } from './enum/vehicles.enum';
-import { getWhere } from 'src/shared/utils/helpers.util';
+import { getWhere } from '../../shared/utils/helpers.util';
 @Injectable()
 export class VehiclesService {
   constructor(

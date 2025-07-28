@@ -4,12 +4,12 @@ import { Planet } from './entities/planet.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FilmsService } from '../films/films.service';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { Filtering } from 'src/shared/interface/basic.interface';
-import { SortOrder } from 'src/shared/enum/basic.enum';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
+import { Filtering } from '../../shared/interface/basic.interface';
+import { SortOrder } from '../../shared/enum/basic.enum';
 import { PlanetsSortableFields } from './enum/planets.enum';
 import { PlanetsSortingDto } from './dto/planets-sorting.dto';
-import { getWhere } from 'src/shared/utils/helpers.util';
+import { getWhere } from '../../shared/utils/helpers.util';
 
 @Injectable()
 export class PlanetsService {

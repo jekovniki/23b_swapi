@@ -5,11 +5,11 @@ import { Repository } from 'typeorm';
 import { FilmsService } from '../films/films.service';
 import { PeopleService } from '../people/people.service';
 import { CreateSpaceshipDto } from './dto/create-spaceship.dto';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { Filtering } from 'src/shared/interface/basic.interface';
-import { SortOrder } from 'src/shared/enum/basic.enum';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
+import { Filtering } from '../../shared/interface/basic.interface';
+import { SortOrder } from '../../shared/enum/basic.enum';
 import { SpaceshipsSortableFields } from './enum/spaceships.enum';
-import { getWhere } from 'src/shared/utils/helpers.util';
+import { getWhere } from '../../shared/utils/helpers.util';
 import { SpaceshipsSortingDto } from './dto/spaceship-sorting.dto';
 
 @Injectable()

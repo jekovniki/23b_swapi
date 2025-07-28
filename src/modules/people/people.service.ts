@@ -5,11 +5,11 @@ import { In, Repository } from 'typeorm';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { FilmsService } from '../films/films.service';
 import { PlanetsService } from '../planets/planets.service';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { Filtering } from 'src/shared/interface/basic.interface';
-import { getWhere } from 'src/shared/utils/helpers.util';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
+import { Filtering } from '../../shared/interface/basic.interface';
+import { getWhere } from '../../shared/utils/helpers.util';
 import { PeopleSortableFields } from './enum/people.enum';
-import { SortOrder } from 'src/shared/enum/basic.enum';
+import { SortOrder } from '../../shared/enum/basic.enum';
 import { PeopleSortingDto } from './dto/people-sorting.dto';
 
 @Injectable()

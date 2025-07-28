@@ -3,12 +3,12 @@ import { CreateFilmDto } from './dto/create-film.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Film } from './entities/film.entity';
 import { In, Repository } from 'typeorm';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { SortOrder } from 'src/shared/enum/basic.enum';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
+import { SortOrder } from '../../shared/enum/basic.enum';
 import { FilmSortableFields } from './enum/film.enum';
 import { FilmSortingDto } from './dto/film-sorting.dto';
-import { Filtering } from 'src/shared/interface/basic.interface';
-import { getWhere } from 'src/shared/utils/helpers.util';
+import { Filtering } from '../../shared/interface/basic.interface';
+import { getWhere } from '../../shared/utils/helpers.util';
 
 @Injectable()
 export class FilmsService {
