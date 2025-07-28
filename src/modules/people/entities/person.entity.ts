@@ -3,7 +3,7 @@ import { Planet } from '../../planets/entities/planet.entity';
 import { Spaceship } from '../../spaceships/entities/spaceship.entity';
 import { Species } from '../../species/entities/species.entity';
 import { Vehicle } from '../../vehicles/entities/vehicle.entity';
-import { Gender } from '../../../shared/enums/basic.enum';
+import { Gender } from '../../../shared/enum/basic.enum';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -119,7 +119,7 @@ export class Person {
       referencedColumnName: 'id',
     },
   })
-  starship: Spaceship[];
+  starships: Spaceship[];
 
   @ManyToMany(() => Vehicle)
   @JoinTable({
@@ -133,5 +133,5 @@ export class Person {
       referencedColumnName: 'id',
     },
   })
-  pilots: Vehicle[];
+  vehicles: Vehicle[];
 }

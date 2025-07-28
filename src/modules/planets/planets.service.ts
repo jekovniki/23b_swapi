@@ -2,8 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { CreatePlanetDto } from './dto/create-planet.dto';
 import { Planet } from './entities/planet.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { FilmsService } from '../films/films.service';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { Filtering } from 'src/shared/interface/basic.interface';
+import { SortOrder } from 'src/shared/enum/basic.enum';
+import { PlanetsSortableFields } from './enum/planets.enum';
+import { PlanetsSortingDto } from './dto/planets-sorting.dto';
+import { getWhere } from 'src/shared/utils/helpers.util';
 
 @Injectable()
 export class PlanetsService {
@@ -12,6 +18,55 @@ export class PlanetsService {
     private readonly planetRepository: Repository<Planet>,
     private readonly filmService: FilmsService,
   ) {}
+
+  async findAll(
+    queryParams: PaginationDto & PlanetsSortingDto,
+    filters?: Filtering[],
+  ) {
+    const {
+      limit = 10,
+      offset = 0,
+      order = SortOrder.Ascending,
+      sortBy = PlanetsSortableFields.ID,
+    } = queryParams;
+    let where = {};
+    if (filters && filters?.length) {
+      where = filters.reduce((acc, filter) => {
+        const filterWhere = getWhere(filter);
+        return { ...acc, ...filterWhere };
+      }, {});
+    }
+    const currentPage = Math.floor(offset / limit) + 1;
+
+    const orderBy: Record<string, 'ASC' | 'DESC'> = {};
+    orderBy[sortBy] = order.toUpperCase() as 'ASC' | 'DESC';
+
+    const [data, total] = await this.planetRepository.findAndCount({
+      where,
+      order: orderBy,
+      take: limit,
+      skip: offset,
+      relations: ['films', 'residents'],
+    });
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      total,
+      limit,
+      offset,
+      nextPage: currentPage < totalPages ? currentPage + 1 : null,
+      data,
+    };
+  }
+
+  async findById(id: number) {
+    return this.planetRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['films', 'residents'],
+    });
+  }
 
   async findByUrl(url: string): Promise<Planet> {
     // fix this

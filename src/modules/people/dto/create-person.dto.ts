@@ -7,7 +7,7 @@ import {
   IsPositive,
   IsString,
 } from 'class-validator';
-import { Gender } from 'src/shared/enums/basic.enum';
+import { Gender } from 'src/shared/enum/basic.enum';
 
 export class CreatePersonDto {
   @IsNotEmpty()

@@ -2,10 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Person } from './entities/person.entity';
 import { In, Repository } from 'typeorm';
-import { CreateFilmDto } from '../films/dto/create-film.dto';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { FilmsService } from '../films/films.service';
 import { PlanetsService } from '../planets/planets.service';
+import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { Filtering } from 'src/shared/interface/basic.interface';
+import { getWhere } from 'src/shared/utils/helpers.util';
+import { PeopleSortableFields } from './enum/people.enum';
+import { SortOrder } from 'src/shared/enum/basic.enum';
+import { PeopleSortingDto } from './dto/people-sorting.dto';
 
 @Injectable()
 export class PeopleService {
@@ -15,6 +20,54 @@ export class PeopleService {
     private readonly filmService: FilmsService,
     private readonly planetService: PlanetsService,
   ) {}
+
+  async findAll(
+    queryParams: PaginationDto & PeopleSortingDto,
+    filters?: Filtering[],
+  ) {
+    const {
+      limit = 10,
+      offset = 0,
+      order = SortOrder.Ascending,
+      sortBy = PeopleSortableFields.ID,
+    } = queryParams;
+    let where = {};
+    if (filters && filters?.length) {
+      where = filters.reduce((acc, filter) => {
+        const filterWhere = getWhere(filter);
+        return { ...acc, ...filterWhere };
+      }, {});
+    }
+    const currentPage = Math.floor(offset / limit) + 1;
+
+    const orderBy: Record<string, 'ASC' | 'DESC'> = {};
+    orderBy[sortBy] = order.toUpperCase() as 'ASC' | 'DESC';
+
+    const [data, total] = await this.peopleRepository.findAndCount({
+      where,
+      take: limit,
+      skip: offset,
+      order: orderBy,
+    });
+    const totalPages = Math.ceil(total / limit);
+
+    return {
+      total,
+      nextPage: currentPage < totalPages ? currentPage + 1 : null,
+      limit,
+      offset,
+      data,
+    };
+  }
+
+  async findById(id: number) {
+    return this.peopleRepository.findOne({
+      where: {
+        id,
+      },
+      relations: ['films', 'species', 'vehicles', 'starships'],
+    });
+  }
 
   async insertMany(inputs: CreatePersonDto[]): Promise<void> {
     for (const input of inputs) {
