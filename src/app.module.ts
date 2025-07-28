@@ -12,6 +12,8 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { minutes, ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './shared/interceptor/logging.interceptor';
+import { UserModule } from './modules/user/user.module';
+import { AuthModule } from './modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { LoggingInterceptor } from './shared/interceptor/logging.interceptor';
         limit: 100,
       },
     ]),
+    UserModule,
+    AuthModule,
   ],
   providers: [
     {
