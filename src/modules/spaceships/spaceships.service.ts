@@ -23,9 +23,15 @@ export class SpaceshipsService {
 
   async findAll(
     queryParams: PaginationDto & SpaceshipsSortingDto,
-    filters?: Filtering,
+    filters?: Filtering[],
   ) {
-    const where = filters ? getWhere(filters) : {};
+    let where = {};
+    if (filters && filters?.length) {
+      where = filters.reduce((acc, filter) => {
+        const filterWhere = getWhere(filter);
+        return { ...acc, ...filterWhere };
+      }, {});
+    }
     const {
       limit = 10,
       offset = 0,

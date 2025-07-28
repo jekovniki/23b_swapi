@@ -30,7 +30,7 @@ export class VehiclesController {
       'consumables',
       'vehicleClass',
     ])
-    filters?: Filtering,
+    filters?: Filtering[],
   ) {
     return this.vehiclesService.findAll(queryParams, filters);
   }

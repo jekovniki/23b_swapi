@@ -19,7 +19,7 @@ export class FilmsService {
 
   async findAll(
     queryParams: PaginationDto & FilmSortingDto,
-    filter?: Filtering,
+    filters?: Filtering[],
   ) {
     const {
       limit = 10,
@@ -27,7 +27,13 @@ export class FilmsService {
       order = SortOrder.Ascending,
       sortBy = FilmSortableFields.ID,
     } = queryParams;
-    const where = filter ? getWhere(filter) : {};
+    let where = {};
+    if (filters && filters?.length) {
+      where = filters.reduce((acc, filter) => {
+        const filterWhere = getWhere(filter);
+        return { ...acc, ...filterWhere };
+      }, {});
+    }
     const currentPage = Math.floor(offset / limit) + 1;
 
     const orderBy: Record<string, 'ASC' | 'DESC'> = {};
@@ -44,9 +50,9 @@ export class FilmsService {
     return {
       total,
       nextPage: currentPage < totalPages ? currentPage + 1 : null,
-      data,
       limit,
       offset,
+      data,
     };
   }
 

@@ -22,7 +22,7 @@ export class VehiclesService {
 
   async findAll(
     queryParams: PaginationDto & VehiclesSortingDto,
-    filters?: Filtering,
+    filters?: Filtering[],
   ) {
     const {
       limit = 10,
@@ -31,7 +31,13 @@ export class VehiclesService {
       sortBy = VehiclesSortableFields.ID,
     } = queryParams;
     const currentPage = Math.floor(offset / limit) + 1;
-    const where = filters ? getWhere(filters) : {};
+    let where = {};
+    if (filters && filters?.length) {
+      where = filters.reduce((acc, filter) => {
+        const filterWhere = getWhere(filter);
+        return { ...acc, ...filterWhere };
+      }, {});
+    }
     const orderBy: Record<string, 'ASC' | 'DESC'> = {};
     orderBy[sortBy] = order.toUpperCase() as 'ASC' | 'DESC';
 

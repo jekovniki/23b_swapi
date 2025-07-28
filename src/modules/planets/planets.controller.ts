@@ -27,7 +27,7 @@ export class PlanetsController {
       'surfaceWater',
       'population',
     ])
-    filters?: Filtering,
+    filters?: Filtering[],
   ) {
     return this.planetsService.findAll(queryParams, filters);
   }

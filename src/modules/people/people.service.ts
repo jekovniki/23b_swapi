@@ -23,7 +23,7 @@ export class PeopleService {
 
   async findAll(
     queryParams: PaginationDto & PeopleSortingDto,
-    filters?: Filtering,
+    filters?: Filtering[],
   ) {
     const {
       limit = 10,
@@ -31,7 +31,13 @@ export class PeopleService {
       order = SortOrder.Ascending,
       sortBy = PeopleSortableFields.ID,
     } = queryParams;
-    const where = filters ? getWhere(filters) : {};
+    let where = {};
+    if (filters && filters?.length) {
+      where = filters.reduce((acc, filter) => {
+        const filterWhere = getWhere(filter);
+        return { ...acc, ...filterWhere };
+      }, {});
+    }
     const currentPage = Math.floor(offset / limit) + 1;
 
     const orderBy: Record<string, 'ASC' | 'DESC'> = {};
@@ -48,9 +54,9 @@ export class PeopleService {
     return {
       total,
       nextPage: currentPage < totalPages ? currentPage + 1 : null,
-      data,
       limit,
       offset,
+      data,
     };
   }
 

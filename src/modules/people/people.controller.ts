@@ -26,7 +26,7 @@ export class PeopleController {
       'birthYear',
       'gender',
     ])
-    filters?: Filtering,
+    filters?: Filtering[],
   ) {
     return this.peopleService.findAll(queryParams, filters);
   }

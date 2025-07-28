@@ -27,7 +27,7 @@ export class SpeciesService {
 
   async findAll(
     queryParams: PaginationDto & SpeciesSortingDto,
-    filters?: Filtering,
+    filters?: Filtering[],
   ) {
     const {
       limit = 10,
@@ -36,7 +36,13 @@ export class SpeciesService {
       sortBy = SpeciesSortableFields.ID,
     } = queryParams;
     const currentPage = Math.floor(offset / limit) + 1;
-    const where = filters ? getWhere(filters) : {};
+    let where = {};
+    if (filters && filters?.length) {
+      where = filters.reduce((acc, filter) => {
+        const filterWhere = getWhere(filter);
+        return { ...acc, ...filterWhere };
+      }, {});
+    }
     const orderBy: Record<string, 'ASC' | 'DESC'> = {};
     orderBy[sortBy] = order.toUpperCase() as 'ASC' | 'DESC';
 

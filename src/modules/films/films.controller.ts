@@ -22,7 +22,7 @@ export class FilmsController {
       'openingCrawl',
       'episodeId',
     ])
-    filters?: Filtering,
+    filters?: Filtering[],
   ) {
     return this.filmsService.findAll(queryParams, filters);
   }

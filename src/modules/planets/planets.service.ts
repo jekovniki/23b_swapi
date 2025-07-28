@@ -21,7 +21,7 @@ export class PlanetsService {
 
   async findAll(
     queryParams: PaginationDto & PlanetsSortingDto,
-    filters?: Filtering,
+    filters?: Filtering[],
   ) {
     const {
       limit = 10,
@@ -29,7 +29,13 @@ export class PlanetsService {
       order = SortOrder.Ascending,
       sortBy = PlanetsSortableFields.ID,
     } = queryParams;
-    const where = filters ? getWhere(filters) : {};
+    let where = {};
+    if (filters && filters?.length) {
+      where = filters.reduce((acc, filter) => {
+        const filterWhere = getWhere(filter);
+        return { ...acc, ...filterWhere };
+      }, {});
+    }
     const currentPage = Math.floor(offset / limit) + 1;
 
     const orderBy: Record<string, 'ASC' | 'DESC'> = {};

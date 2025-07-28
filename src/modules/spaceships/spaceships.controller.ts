@@ -32,7 +32,7 @@ export class SpaceshipsController {
       'mglt',
       'starshipClass',
     ])
-    filters?: Filtering,
+    filters?: Filtering[],
   ) {
     return this.spaceshipsService.findAll(queryParams, filters);
   }

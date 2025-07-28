@@ -28,7 +28,7 @@ export class SpeciesController {
       'averageLifespan',
       'language',
     ])
-    filters?: Filtering,
+    filters?: Filtering[],
   ) {
     return this.speciesService.findAll(queryParams, filters);
   }
