@@ -73,7 +73,8 @@ export class PlanetsService {
     })) as Planet;
   }
 
-  async insertMany(inputs: CreatePlanetDto[]): Promise<void> {
+  async upsert(inputs: CreatePlanetDto[]): Promise<void> {
+    const planets = [];
     for (const input of inputs) {
       const { films, ...planetData } = input;
       /* @todo : fix the types here,make sure that type is inherited properly and you don't need to make
@@ -88,7 +89,12 @@ export class PlanetsService {
         planet.films = filmsData || [];
       }
 
-      await this.planetRepository.save(planet);
+      planets.push(planet);
     }
+
+    await this.planetRepository.upsert(planets, {
+      conflictPaths: ['swapiUrl'],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 }

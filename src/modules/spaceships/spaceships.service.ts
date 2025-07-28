@@ -70,7 +70,9 @@ export class SpaceshipsService {
     });
   }
 
-  async insertMany(inputs: CreateSpaceshipDto[]): Promise<void> {
+  async upsert(inputs: CreateSpaceshipDto[]): Promise<void> {
+    const spaceships = [];
+
     for (const input of inputs) {
       const { films, pilots, ...starshipData } = input;
       const starships = this.spaceshipRepository.create(starshipData);
@@ -83,8 +85,12 @@ export class SpaceshipsService {
         const peopleData = await this.peopleService.findByUrls(pilots);
         starships.pilots = peopleData || [];
       }
-
-      await this.spaceshipRepository.save(starships);
+      spaceships.push(starships);
     }
+
+    await this.spaceshipRepository.upsert(spaceships, {
+      conflictPaths: ['swapiUrl'],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 }

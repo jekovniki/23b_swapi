@@ -67,7 +67,9 @@ export class PeopleService {
     });
   }
 
-  async insertMany(inputs: CreatePersonDto[]): Promise<void> {
+  async upsert(inputs: CreatePersonDto[]): Promise<void> {
+    const people = [];
+
     for (const input of inputs) {
       const { films, ...peopleData } = input;
       const person = this.peopleRepository.create(peopleData);
@@ -80,8 +82,13 @@ export class PeopleService {
         peopleData.homeworldUrl,
       );
 
-      await this.peopleRepository.save(person);
+      people.push(person);
     }
+
+    await this.peopleRepository.upsert(people, {
+      conflictPaths: ['swapiUrl'],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 
   async findByUrls(urls: string[]): Promise<Person[] | null> {

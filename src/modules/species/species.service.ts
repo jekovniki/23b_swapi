@@ -71,7 +71,8 @@ export class SpeciesService {
     });
   }
 
-  async insertMany(inputs: CreateSpeciesDto[]): Promise<void> {
+  async upsert(inputs: CreateSpeciesDto[]): Promise<void> {
+    const allSpecies = [];
     for (const input of inputs) {
       const { films, people, ...speciesData } = input;
       const species = this.speciesRepository.create(speciesData);
@@ -87,8 +88,12 @@ export class SpeciesService {
       species.homeworld = await this.planetService.findByUrl(
         speciesData.homeworldUrl,
       );
-
-      await this.speciesRepository.save(species);
+      allSpecies.push(species);
     }
+
+    await this.speciesRepository.upsert(allSpecies, {
+      conflictPaths: ['swapiUrl'],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 }

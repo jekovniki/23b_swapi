@@ -66,21 +66,26 @@ export class VehiclesService {
     });
   }
 
-  async insertMany(inputs: CreateVehicleDto[]): Promise<void> {
+  async upsert(inputs: CreateVehicleDto[]): Promise<void> {
+    const vehicles = [];
     for (const input of inputs) {
       const { films, pilots, ...speciesData } = input;
-      const species = this.vehicleRepository.create(speciesData);
+      const vehicle = this.vehicleRepository.create(speciesData);
 
       if (films && films?.length) {
         const filmsData = await this.filmService.findByUrl(films);
-        species.films = filmsData || [];
+        vehicle.films = filmsData || [];
       }
       if (pilots && pilots?.length) {
         const peopleData = await this.peopleService.findByUrls(pilots);
-        species.pilots = peopleData || [];
+        vehicle.pilots = peopleData || [];
       }
-
-      await this.vehicleRepository.save(species);
+      vehicles.push(vehicle);
     }
+
+    await this.vehicleRepository.upsert(vehicles, {
+      conflictPaths: ['swapiUrl'],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 }

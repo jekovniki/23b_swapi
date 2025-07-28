@@ -63,9 +63,11 @@ export class FilmsService {
     });
   }
 
-  async insertMany(inputs: CreateFilmDto[]): Promise<Film[]> {
-    const films = this.filmRepository.create(inputs);
-    return await this.filmRepository.save(films);
+  async upsert(inputs: CreateFilmDto[]): Promise<void> {
+    await this.filmRepository.upsert(inputs, {
+      conflictPaths: ['swapiUrl'],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 
   async findByUrl(urls: string[]): Promise<Film[] | null> {
