@@ -6,6 +6,11 @@ import { FilmsService } from '../films/films.service';
 import { PeopleService } from '../people/people.service';
 import { CreateSpaceshipDto } from './dto/create-spaceship.dto';
 import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { Filtering } from 'src/shared/interface/basic.interface';
+import { SortOrder } from 'src/shared/enum/basic.enum';
+import { SpaceshipsSortableFields } from './enum/spaceships.enum';
+import { getWhere } from 'src/shared/utils/helpers.util';
+import { SpaceshipsSortingDto } from './dto/spaceship-sorting.dto';
 
 @Injectable()
 export class SpaceshipsService {
@@ -16,11 +21,25 @@ export class SpaceshipsService {
     private readonly peopleService: PeopleService,
   ) {}
 
-  async findAll(queryParams: PaginationDto) {
-    const { limit = 10, offset = 0 } = queryParams;
+  async findAll(
+    queryParams: PaginationDto & SpaceshipsSortingDto,
+    filters?: Filtering,
+  ) {
+    const where = filters ? getWhere(filters) : {};
+    const {
+      limit = 10,
+      offset = 0,
+      order = SortOrder.Ascending,
+      sortBy = SpaceshipsSortableFields.ID,
+    } = queryParams;
     const currentPage = Math.floor(offset / limit) + 1;
 
+    const orderBy: Record<string, 'ASC' | 'DESC'> = {};
+    orderBy[sortBy] = order.toUpperCase() as 'ASC' | 'DESC';
+
     const [data, total] = await this.spaceshipRepository.findAndCount({
+      where,
+      order: orderBy,
       take: limit,
       skip: offset,
       relations: ['films', 'pilots'],
@@ -30,9 +49,9 @@ export class SpaceshipsService {
     return {
       total,
       nextPage: currentPage < totalPages ? currentPage + 1 : null,
-      data,
       limit,
       offset,
+      data,
     };
   }
 

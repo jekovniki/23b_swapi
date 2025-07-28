@@ -1,0 +1,17 @@
+export enum SpaceshipsSortableFields {
+  ID = 'id',
+  Name = 'name',
+  Model = 'model',
+  Manufacturer = 'manufacturer',
+  CostInCredits = 'costInCredits',
+  Length = 'length',
+  MaxAtmospheringSpeed = 'maxAtmospheringSpeed',
+  MinCrew = 'minCrew',
+  MaxCrew = 'maxCrew',
+  Passengers = 'passengers',
+  CargoCapacity = 'cargoCapacity',
+  Consumables = 'consumables',
+  HyperdriveRating = 'hyperdriveRating',
+  MGLT = 'mglt',
+  StarshipClass = 'starshipClass',
+}
