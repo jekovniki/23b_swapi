@@ -1,9 +1,9 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { PeopleService } from './people.service';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
 import { FindPersonDto } from './dto/find-person.dto';
-import { FilteringParams } from 'src/shared/decorators/filtering-params.decorator';
-import { Filtering } from 'src/shared/interface/basic.interface';
+import { FilteringParams } from '../../shared/decorators/filtering-params.decorator';
+import { Filtering } from '../../shared/interface/basic.interface';
 import { PeopleSortingDto } from './dto/people-sorting.dto';
 
 @Controller({
@@ -15,7 +15,8 @@ export class PeopleController {
 
   @Get()
   findAll(
-    @Query() queryParams: PaginationDto & PeopleSortingDto,
+    @Query() paginationParams: PaginationDto,
+    @Query() sortingParams: PeopleSortingDto,
     @FilteringParams([
       'name',
       'height',
@@ -28,7 +29,7 @@ export class PeopleController {
     ])
     filters?: Filtering[],
   ) {
-    return this.peopleService.findAll(queryParams, filters);
+    return this.peopleService.findAll(paginationParams, sortingParams, filters);
   }
 
   @Get(':id')

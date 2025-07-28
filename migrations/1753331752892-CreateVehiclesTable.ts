@@ -84,6 +84,7 @@ export class CreateVehiclesTable1753331752892 implements MigrationInterface {
             name: 'swapi_url',
             type: 'varchar',
             isNullable: false,
+            isUnique: true,
           },
         ],
         indices: [

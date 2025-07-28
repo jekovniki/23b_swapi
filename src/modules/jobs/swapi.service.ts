@@ -12,6 +12,7 @@ import {
 import { SpeciesService } from '../species/species.service';
 import { SpaceshipsService } from '../spaceships/spaceships.service';
 import { VehiclesService } from '../vehicles/vehicles.service';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 @Injectable()
 export class SwapiService {
@@ -31,6 +32,18 @@ export class SwapiService {
       }),
       timeout: 30000,
     });
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_2AM, {
+    timeZone: 'Europe/Sofia',
+  })
+  async handleCron() {
+    try {
+      this.logger.log('Starting scheduled SWAPI data sync...');
+      await this.sync();
+    } catch (error) {
+      this.logger.error('Error during scheduled SWAPI data sync: ', error);
+    }
   }
 
   public async sync() {
@@ -63,7 +76,7 @@ export class SwapiService {
   private async fetchFilms() {
     const films = await this.fetchAllPages(SwapiEndpoints.Films);
 
-    await this.filmService.insertMany(
+    await this.filmService.upsert(
       films.map((film) => ({
         title: film.title,
         episodeId: film.episode_id,
@@ -79,7 +92,7 @@ export class SwapiService {
   private async fetchPlanets() {
     const planets = await this.fetchAllPages(SwapiEndpoints.Planets);
 
-    await this.planetService.insertMany(
+    await this.planetService.upsert(
       planets.map((planet) => ({
         ...planet,
         rotationPeriod: convertUnknownToUndefined(planet.rotation_period),
@@ -95,7 +108,7 @@ export class SwapiService {
   private async fetchPeople() {
     const people = await this.fetchAllPages(SwapiEndpoints.People);
 
-    await this.peopleService.insertMany(
+    await this.peopleService.upsert(
       people.map((person) => ({
         ...person,
         homeworldUrl: person.homeworld,
@@ -113,7 +126,7 @@ export class SwapiService {
   private async fetchSpecies() {
     const species = await this.fetchAllPages(SwapiEndpoints.Species);
 
-    await this.speciesService.insertMany(
+    await this.speciesService.upsert(
       species.map((type) => ({
         ...type,
         homeworldUrl: type.homeworld,
@@ -130,10 +143,10 @@ export class SwapiService {
   private async fetchStarships() {
     const spaceships = await this.fetchAllPages(SwapiEndpoints.Starships);
 
-    await this.spaceshipService.insertMany(
+    await this.spaceshipService.upsert(
       spaceships.map((spaceship) => ({
         ...spaceship,
-        costInCredists: convertUnknownToUndefined(spaceship.cost_in_credits),
+        costInCredists: spaceship.cost_in_credits,
         length: convertUnknownToUndefined(spaceship.length)?.replace(/,/g, ''),
         maxAtmospheringSpeed: spaceship.max_atmosphering_speed,
         minCrew:
@@ -162,10 +175,10 @@ export class SwapiService {
   private async fetchVehicles() {
     const spaceships = await this.fetchAllPages(SwapiEndpoints.Vehicles);
 
-    await this.vehicleService.insertMany(
+    await this.vehicleService.upsert(
       spaceships.map((spaceship) => ({
         ...spaceship,
-        costInCredists: convertUnknownToUndefined(spaceship.cost_in_credits),
+        costInCredists: spaceship.cost_in_credits,
         length: convertUnknownToUndefined(spaceship.length)?.replace(/,/g, ''),
         maxAtmospheringSpeed: spaceship.max_atmosphering_speed,
         crew: spaceship.crew?.replace(/,/g, ''),

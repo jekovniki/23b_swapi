@@ -105,6 +105,7 @@ export class CreateSpaceshipsTable1753331705064 implements MigrationInterface {
             name: 'swapi_url',
             type: 'varchar',
             isNullable: false,
+            isUnique: true,
           },
         ],
         indices: [

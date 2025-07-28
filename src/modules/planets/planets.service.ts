@@ -4,12 +4,12 @@ import { Planet } from './entities/planet.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { FilmsService } from '../films/films.service';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { Filtering } from 'src/shared/interface/basic.interface';
-import { SortOrder } from 'src/shared/enum/basic.enum';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
+import { Filtering } from '../../shared/interface/basic.interface';
+import { SortOrder } from '../../shared/enum/basic.enum';
 import { PlanetsSortableFields } from './enum/planets.enum';
 import { PlanetsSortingDto } from './dto/planets-sorting.dto';
-import { getWhere } from 'src/shared/utils/helpers.util';
+import { getWhere } from '../../shared/utils/helpers.util';
 
 @Injectable()
 export class PlanetsService {
@@ -20,15 +20,13 @@ export class PlanetsService {
   ) {}
 
   async findAll(
-    queryParams: PaginationDto & PlanetsSortingDto,
+    paginationParams: PaginationDto,
+    sortingParams: PlanetsSortingDto,
     filters?: Filtering[],
   ) {
-    const {
-      limit = 10,
-      offset = 0,
-      order = SortOrder.Ascending,
-      sortBy = PlanetsSortableFields.ID,
-    } = queryParams;
+    const { limit = 10, offset = 0 } = paginationParams;
+    const { order = SortOrder.Ascending, sortBy = PlanetsSortableFields.ID } =
+      sortingParams;
     let where = {};
     if (filters && filters?.length) {
       where = filters.reduce((acc, filter) => {
@@ -75,7 +73,8 @@ export class PlanetsService {
     })) as Planet;
   }
 
-  async insertMany(inputs: CreatePlanetDto[]): Promise<void> {
+  async upsert(inputs: CreatePlanetDto[]): Promise<void> {
+    const planets = [];
     for (const input of inputs) {
       const { films, ...planetData } = input;
       /* @todo : fix the types here,make sure that type is inherited properly and you don't need to make
@@ -90,7 +89,12 @@ export class PlanetsService {
         planet.films = filmsData || [];
       }
 
-      await this.planetRepository.save(planet);
+      planets.push(planet);
     }
+
+    await this.planetRepository.upsert(planets, {
+      conflictPaths: ['swapiUrl'],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 }

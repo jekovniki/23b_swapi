@@ -1,9 +1,9 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { PlanetsService } from './planets.service';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
 import { FindPlanetDto } from './dto/find-planet.dto';
-import { FilteringParams } from 'src/shared/decorators/filtering-params.decorator';
-import { Filtering } from 'src/shared/interface/basic.interface';
+import { FilteringParams } from '../../shared/decorators/filtering-params.decorator';
+import { Filtering } from '../../shared/interface/basic.interface';
 import { PlanetsSortingDto } from './dto/planets-sorting.dto';
 
 @Controller({
@@ -15,7 +15,8 @@ export class PlanetsController {
 
   @Get()
   findAll(
-    @Query() queryParams: PaginationDto & PlanetsSortingDto,
+    @Query() paginationParams: PaginationDto,
+    @Query() sortingParams: PlanetsSortingDto,
     @FilteringParams([
       'name',
       'rotationPeriod',
@@ -29,7 +30,11 @@ export class PlanetsController {
     ])
     filters?: Filtering[],
   ) {
-    return this.planetsService.findAll(queryParams, filters);
+    return this.planetsService.findAll(
+      paginationParams,
+      sortingParams,
+      filters,
+    );
   }
 
   @Get(':id')

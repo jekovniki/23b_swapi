@@ -5,11 +5,11 @@ import { Repository } from 'typeorm';
 import { FilmsService } from '../films/films.service';
 import { PeopleService } from '../people/people.service';
 import { CreateSpaceshipDto } from './dto/create-spaceship.dto';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { Filtering } from 'src/shared/interface/basic.interface';
-import { SortOrder } from 'src/shared/enum/basic.enum';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
+import { Filtering } from '../../shared/interface/basic.interface';
+import { SortOrder } from '../../shared/enum/basic.enum';
 import { SpaceshipsSortableFields } from './enum/spaceships.enum';
-import { getWhere } from 'src/shared/utils/helpers.util';
+import { getWhere } from '../../shared/utils/helpers.util';
 import { SpaceshipsSortingDto } from './dto/spaceship-sorting.dto';
 
 @Injectable()
@@ -22,9 +22,15 @@ export class SpaceshipsService {
   ) {}
 
   async findAll(
-    queryParams: PaginationDto & SpaceshipsSortingDto,
+    paginationParams: PaginationDto,
+    sortingParams: SpaceshipsSortingDto,
     filters?: Filtering[],
   ) {
+    const { limit = 10, offset = 0 } = paginationParams;
+    const {
+      order = SortOrder.Ascending,
+      sortBy = SpaceshipsSortableFields.ID,
+    } = sortingParams;
     let where = {};
     if (filters && filters?.length) {
       where = filters.reduce((acc, filter) => {
@@ -32,12 +38,6 @@ export class SpaceshipsService {
         return { ...acc, ...filterWhere };
       }, {});
     }
-    const {
-      limit = 10,
-      offset = 0,
-      order = SortOrder.Ascending,
-      sortBy = SpaceshipsSortableFields.ID,
-    } = queryParams;
     const currentPage = Math.floor(offset / limit) + 1;
 
     const orderBy: Record<string, 'ASC' | 'DESC'> = {};
@@ -70,7 +70,9 @@ export class SpaceshipsService {
     });
   }
 
-  async insertMany(inputs: CreateSpaceshipDto[]): Promise<void> {
+  async upsert(inputs: CreateSpaceshipDto[]): Promise<void> {
+    const spaceships = [];
+
     for (const input of inputs) {
       const { films, pilots, ...starshipData } = input;
       const starships = this.spaceshipRepository.create(starshipData);
@@ -83,8 +85,12 @@ export class SpaceshipsService {
         const peopleData = await this.peopleService.findByUrls(pilots);
         starships.pilots = peopleData || [];
       }
-
-      await this.spaceshipRepository.save(starships);
+      spaceships.push(starships);
     }
+
+    await this.spaceshipRepository.upsert(spaceships, {
+      conflictPaths: ['swapiUrl'],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 }

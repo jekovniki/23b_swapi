@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional } from 'class-validator';
-import { BaseSortingDto } from 'src/shared/dto/base-sorting.dto';
+import { BaseSortingDto } from '../../../shared/dto/base-sorting.dto';
 import { SpaceshipsSortableFields } from '../enum/spaceships.enum';
 
 export class SpaceshipsSortingDto extends BaseSortingDto {

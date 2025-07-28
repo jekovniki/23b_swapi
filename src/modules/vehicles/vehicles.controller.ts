@@ -1,10 +1,10 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { VehiclesService } from './vehicles.service';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
 import { FindVehicleDto } from './dto/find-vehicle.dto';
 import { VehiclesSortingDto } from './dto/vehicles-sorting.dto';
-import { FilteringParams } from 'src/shared/decorators/filtering-params.decorator';
-import { Filtering } from 'src/shared/interface/basic.interface';
+import { FilteringParams } from '../../shared/decorators/filtering-params.decorator';
+import { Filtering } from '../../shared/interface/basic.interface';
 
 @Controller({
   path: 'vehicles',
@@ -15,7 +15,8 @@ export class VehiclesController {
 
   @Get()
   findAll(
-    @Query() queryParams: PaginationDto & VehiclesSortingDto,
+    @Query() paginationParams: PaginationDto,
+    @Query() sortingParams: VehiclesSortingDto,
     @FilteringParams([
       'id',
       'name',
@@ -32,7 +33,11 @@ export class VehiclesController {
     ])
     filters?: Filtering[],
   ) {
-    return this.vehiclesService.findAll(queryParams, filters);
+    return this.vehiclesService.findAll(
+      paginationParams,
+      sortingParams,
+      filters,
+    );
   }
 
   @Get(':id')

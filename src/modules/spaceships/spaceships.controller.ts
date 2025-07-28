@@ -1,10 +1,10 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { SpaceshipsService } from './spaceships.service';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
 import { FindSpaceshipDto } from './dto/find-spaceship.dto';
 import { SpaceshipsSortingDto } from './dto/spaceship-sorting.dto';
-import { FilteringParams } from 'src/shared/decorators/filtering-params.decorator';
-import { Filtering } from 'src/shared/interface/basic.interface';
+import { FilteringParams } from '../../shared/decorators/filtering-params.decorator';
+import { Filtering } from '../../shared/interface/basic.interface';
 
 @Controller({
   path: 'spaceships',
@@ -15,7 +15,8 @@ export class SpaceshipsController {
 
   @Get()
   findAll(
-    @Query() queryParams: PaginationDto & SpaceshipsSortingDto,
+    @Query() paginationParams: PaginationDto,
+    @Query() sortingParams: SpaceshipsSortingDto,
     @FilteringParams([
       'name',
       'model',
@@ -34,7 +35,11 @@ export class SpaceshipsController {
     ])
     filters?: Filtering[],
   ) {
-    return this.spaceshipsService.findAll(queryParams, filters);
+    return this.spaceshipsService.findAll(
+      paginationParams,
+      sortingParams,
+      filters,
+    );
   }
 
   @Get(':id')

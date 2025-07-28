@@ -76,6 +76,7 @@ export class CreatePlanetsTable1753331663148 implements MigrationInterface {
             name: 'swapi_url',
             type: 'varchar',
             isNullable: false,
+            isUnique: true,
           },
         ],
         indices: [

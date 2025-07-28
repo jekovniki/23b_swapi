@@ -6,14 +6,12 @@ import { Repository } from 'typeorm';
 import { FilmsService } from '../films/films.service';
 import { PlanetsService } from '../planets/planets.service';
 import { PeopleService } from '../people/people.service';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { Filtering } from 'src/shared/interface/basic.interface';
-import { SpaceshipsSortingDto } from '../spaceships/dto/spaceship-sorting.dto';
-import { SortOrder } from 'src/shared/enum/basic.enum';
-import { SpaceshipsSortableFields } from '../spaceships/enum/spaceships.enum';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
+import { Filtering } from '../../shared/interface/basic.interface';
+import { SortOrder } from '../../shared/enum/basic.enum';
 import { SpeciesSortableFields } from './enum/species.enum';
 import { SpeciesSortingDto } from './dto/species-sorting.dto';
-import { getWhere } from 'src/shared/utils/helpers.util';
+import { getWhere } from '../../shared/utils/helpers.util';
 
 @Injectable()
 export class SpeciesService {
@@ -26,15 +24,13 @@ export class SpeciesService {
   ) {}
 
   async findAll(
-    queryParams: PaginationDto & SpeciesSortingDto,
+    paginationParams: PaginationDto,
+    sortingParams: SpeciesSortingDto,
     filters?: Filtering[],
   ) {
-    const {
-      limit = 10,
-      offset = 0,
-      order = SortOrder.Ascending,
-      sortBy = SpeciesSortableFields.ID,
-    } = queryParams;
+    const { limit = 10, offset = 0 } = paginationParams;
+    const { order = SortOrder.Ascending, sortBy = SpeciesSortableFields.ID } =
+      sortingParams;
     const currentPage = Math.floor(offset / limit) + 1;
     let where = {};
     if (filters && filters?.length) {
@@ -73,7 +69,8 @@ export class SpeciesService {
     });
   }
 
-  async insertMany(inputs: CreateSpeciesDto[]): Promise<void> {
+  async upsert(inputs: CreateSpeciesDto[]): Promise<void> {
+    const allSpecies = [];
     for (const input of inputs) {
       const { films, people, ...speciesData } = input;
       const species = this.speciesRepository.create(speciesData);
@@ -89,8 +86,12 @@ export class SpeciesService {
       species.homeworld = await this.planetService.findByUrl(
         speciesData.homeworldUrl,
       );
-
-      await this.speciesRepository.save(species);
+      allSpecies.push(species);
     }
+
+    await this.speciesRepository.upsert(allSpecies, {
+      conflictPaths: ['swapiUrl'],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 }

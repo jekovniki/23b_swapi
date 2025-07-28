@@ -3,12 +3,12 @@ import { CreateFilmDto } from './dto/create-film.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Film } from './entities/film.entity';
 import { In, Repository } from 'typeorm';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { SortOrder } from 'src/shared/enum/basic.enum';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
+import { SortOrder } from '../../shared/enum/basic.enum';
 import { FilmSortableFields } from './enum/film.enum';
 import { FilmSortingDto } from './dto/film-sorting.dto';
-import { Filtering } from 'src/shared/interface/basic.interface';
-import { getWhere } from 'src/shared/utils/helpers.util';
+import { Filtering } from '../../shared/interface/basic.interface';
+import { getWhere } from '../../shared/utils/helpers.util';
 
 @Injectable()
 export class FilmsService {
@@ -18,15 +18,13 @@ export class FilmsService {
   ) {}
 
   async findAll(
-    queryParams: PaginationDto & FilmSortingDto,
+    paginationParams: PaginationDto,
+    sortingParams: FilmSortingDto,
     filters?: Filtering[],
   ) {
-    const {
-      limit = 10,
-      offset = 0,
-      order = SortOrder.Ascending,
-      sortBy = FilmSortableFields.ID,
-    } = queryParams;
+    const { limit = 10, offset = 0 } = paginationParams;
+    const { order = SortOrder.Ascending, sortBy = FilmSortableFields.ID } =
+      sortingParams;
     let where = {};
     if (filters && filters?.length) {
       where = filters.reduce((acc, filter) => {
@@ -65,9 +63,11 @@ export class FilmsService {
     });
   }
 
-  async insertMany(inputs: CreateFilmDto[]): Promise<Film[]> {
-    const films = this.filmRepository.create(inputs);
-    return await this.filmRepository.save(films);
+  async upsert(inputs: CreateFilmDto[]): Promise<void> {
+    await this.filmRepository.upsert(inputs, {
+      conflictPaths: ['swapiUrl'],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 
   async findByUrl(urls: string[]): Promise<Film[] | null> {

@@ -5,11 +5,11 @@ import { In, Repository } from 'typeorm';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { FilmsService } from '../films/films.service';
 import { PlanetsService } from '../planets/planets.service';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
-import { Filtering } from 'src/shared/interface/basic.interface';
-import { getWhere } from 'src/shared/utils/helpers.util';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
+import { Filtering } from '../../shared/interface/basic.interface';
+import { getWhere } from '../../shared/utils/helpers.util';
 import { PeopleSortableFields } from './enum/people.enum';
-import { SortOrder } from 'src/shared/enum/basic.enum';
+import { SortOrder } from '../../shared/enum/basic.enum';
 import { PeopleSortingDto } from './dto/people-sorting.dto';
 
 @Injectable()
@@ -22,15 +22,13 @@ export class PeopleService {
   ) {}
 
   async findAll(
-    queryParams: PaginationDto & PeopleSortingDto,
+    paginationParams: PaginationDto,
+    sortingParams: PeopleSortingDto,
     filters?: Filtering[],
   ) {
-    const {
-      limit = 10,
-      offset = 0,
-      order = SortOrder.Ascending,
-      sortBy = PeopleSortableFields.ID,
-    } = queryParams;
+    const { limit = 10, offset = 0 } = paginationParams;
+    const { order = SortOrder.Ascending, sortBy = PeopleSortableFields.ID } =
+      sortingParams;
     let where = {};
     if (filters && filters?.length) {
       where = filters.reduce((acc, filter) => {
@@ -69,7 +67,9 @@ export class PeopleService {
     });
   }
 
-  async insertMany(inputs: CreatePersonDto[]): Promise<void> {
+  async upsert(inputs: CreatePersonDto[]): Promise<void> {
+    const people = [];
+
     for (const input of inputs) {
       const { films, ...peopleData } = input;
       const person = this.peopleRepository.create(peopleData);
@@ -82,8 +82,13 @@ export class PeopleService {
         peopleData.homeworldUrl,
       );
 
-      await this.peopleRepository.save(person);
+      people.push(person);
     }
+
+    await this.peopleRepository.upsert(people, {
+      conflictPaths: ['swapiUrl'],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 
   async findByUrls(urls: string[]): Promise<Person[] | null> {

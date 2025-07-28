@@ -1,10 +1,10 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { SpeciesService } from './species.service';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
 import { FindSpaceshipDto } from '../spaceships/dto/find-spaceship.dto';
 import { SpeciesSortingDto } from './dto/species-sorting.dto';
-import { FilteringParams } from 'src/shared/decorators/filtering-params.decorator';
-import { Filtering } from 'src/shared/interface/basic.interface';
+import { FilteringParams } from '../../shared/decorators/filtering-params.decorator';
+import { Filtering } from '../../shared/interface/basic.interface';
 
 @Controller({
   path: 'species',
@@ -15,7 +15,8 @@ export class SpeciesController {
 
   @Get()
   findAll(
-    @Query() queryParams: PaginationDto & SpeciesSortingDto,
+    @Query() paginationParams: PaginationDto,
+    @Query() sortingParams: SpeciesSortingDto,
     @FilteringParams([
       'id',
       'name',
@@ -30,7 +31,11 @@ export class SpeciesController {
     ])
     filters?: Filtering[],
   ) {
-    return this.speciesService.findAll(queryParams, filters);
+    return this.speciesService.findAll(
+      paginationParams,
+      sortingParams,
+      filters,
+    );
   }
 
   @Get(':id')

@@ -5,12 +5,12 @@ import { Repository } from 'typeorm';
 import { FilmsService } from '../films/films.service';
 import { PeopleService } from '../people/people.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
-import { PaginationDto } from 'src/shared/dto/pagination.dto';
+import { PaginationDto } from '../../shared/dto/pagination.dto';
 import { VehiclesSortingDto } from './dto/vehicles-sorting.dto';
-import { Filtering } from 'src/shared/interface/basic.interface';
-import { SortOrder } from 'src/shared/enum/basic.enum';
+import { Filtering } from '../../shared/interface/basic.interface';
+import { SortOrder } from '../../shared/enum/basic.enum';
 import { VehiclesSortableFields } from './enum/vehicles.enum';
-import { getWhere } from 'src/shared/utils/helpers.util';
+import { getWhere } from '../../shared/utils/helpers.util';
 @Injectable()
 export class VehiclesService {
   constructor(
@@ -21,15 +21,13 @@ export class VehiclesService {
   ) {}
 
   async findAll(
-    queryParams: PaginationDto & VehiclesSortingDto,
+    paginationParams: PaginationDto,
+    sortingParams: VehiclesSortingDto,
     filters?: Filtering[],
   ) {
-    const {
-      limit = 10,
-      offset = 0,
-      order = SortOrder.Ascending,
-      sortBy = VehiclesSortableFields.ID,
-    } = queryParams;
+    const { limit = 10, offset = 0 } = paginationParams;
+    const { order = SortOrder.Ascending, sortBy = VehiclesSortableFields.ID } =
+      sortingParams;
     const currentPage = Math.floor(offset / limit) + 1;
     let where = {};
     if (filters && filters?.length) {
@@ -68,21 +66,26 @@ export class VehiclesService {
     });
   }
 
-  async insertMany(inputs: CreateVehicleDto[]): Promise<void> {
+  async upsert(inputs: CreateVehicleDto[]): Promise<void> {
+    const vehicles = [];
     for (const input of inputs) {
       const { films, pilots, ...speciesData } = input;
-      const species = this.vehicleRepository.create(speciesData);
+      const vehicle = this.vehicleRepository.create(speciesData);
 
       if (films && films?.length) {
         const filmsData = await this.filmService.findByUrl(films);
-        species.films = filmsData || [];
+        vehicle.films = filmsData || [];
       }
       if (pilots && pilots?.length) {
         const peopleData = await this.peopleService.findByUrls(pilots);
-        species.pilots = peopleData || [];
+        vehicle.pilots = peopleData || [];
       }
-
-      await this.vehicleRepository.save(species);
+      vehicles.push(vehicle);
     }
+
+    await this.vehicleRepository.upsert(vehicles, {
+      conflictPaths: ['swapiUrl'],
+      skipUpdateIfNoValuesChanged: true,
+    });
   }
 }
