@@ -12,6 +12,8 @@ $ npm install # install node packages
 # 2. make a copy of the .env.example, name it .env - configure the variables if necessary
 # 3.
 $ docker-compose up # run the infra
+# 5
+$ npm run typeorm:run-migrations # create db structure
 # 4.
 $ npm run seed # initial fetch of the database. You need to have internet connection.
 # 5.
